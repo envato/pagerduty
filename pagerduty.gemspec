@@ -23,7 +23,8 @@ Gem::Specification.new do |s|
     "README.md",
     "Rakefile",
     "VERSION",
-    "lib/pagerduty.rb"
+    "lib/pagerduty.rb",
+    "pagerduty.gemspec"
   ]
   s.homepage = %q{http://github.com/envato/pagerduty}
   s.licenses = ["MIT"]
@@ -38,13 +39,19 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.1"])
+      s.add_development_dependency(%q<json>, ["~> 1.4.6"])
+      s.add_development_dependency(%q<curb>, ["~> 0.7.8"])
     else
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.1"])
+      s.add_dependency(%q<json>, ["~> 1.4.6"])
+      s.add_dependency(%q<curb>, ["~> 0.7.8"])
     end
   else
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.1"])
+    s.add_dependency(%q<json>, ["~> 1.4.6"])
+    s.add_dependency(%q<curb>, ["~> 0.7.8"])
   end
 end
 
