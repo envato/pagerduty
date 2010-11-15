@@ -13,10 +13,10 @@ require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "pagerduty"
-  gem.homepage = "http://github.com/charliesome/pagerduty"
+  gem.homepage = "http://github.com/envato/pagerduty"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = "Pagerduty API client library"
+  gem.description = "Provides a simple interface for calling into the Pagerduty API"
   gem.email = "charlie@charliesomerville.com"
   gem.authors = ["charliesome"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
@@ -25,22 +25,6 @@ Jeweler::Tasks.new do |gem|
   #  gem.add_development_dependency 'rspec', '> 1.2.3'
 end
 Jeweler::RubygemsDotOrgTasks.new
-
-require 'rake/testtask'
-Rake::TestTask.new(:test) do |test|
-  test.libs << 'lib' << 'test'
-  test.pattern = 'test/**/test_*.rb'
-  test.verbose = true
-end
-
-require 'rcov/rcovtask'
-Rcov::RcovTask.new do |test|
-  test.libs << 'test'
-  test.pattern = 'test/**/test_*.rb'
-  test.verbose = true
-end
-
-task :default => :test
 
 require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|
