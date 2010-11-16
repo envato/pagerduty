@@ -26,6 +26,10 @@ class Pagerduty
     PagerdutyIncident.new @service_key, resp["incident_key"]
   end
   
+  def get_incident(incident_key)
+    PagerdutyIncident.new @service_key, incident_key
+  end
+  
 protected
   def api_call(event_type, description, details = {})
     params = { :event_type => event_type, :service_key => @service_key, :description => description, :details => details }
