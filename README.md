@@ -6,7 +6,7 @@ Provides a simple interface for calling into the [Pagerduty](http://pagerduty.co
 Installation
 ------------
 
-Make sure you have installed the two gems that pagerduty depends on: `json` and `curb`. Then install pagerduty with this command:
+Install pagerduty with this command:
 
     gem install pagerduty
 
