@@ -5,3 +5,4 @@ rdoc
 *.swp
 *.swo
 pkg
+.bundle
