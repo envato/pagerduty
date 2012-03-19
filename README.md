@@ -15,7 +15,7 @@ Usage
 
 Pagerduty exposes three classes, `Pagerduty`, `PagerdutyIncident` and `PagerdutyException`. Instances of `PagerdutyIncident` are created and returned for every API call.
 
-`Pagerduty`'s constructor takes a single argument - your `service_key`. You can then use the method `trigger` to trigger a new incident with Pagerduty:
+`Pagerduty`'s constructor takes 2 arguments - your `service_key` and an optional argument to set the 'incident_key' You can then use the method `trigger` to trigger a new incident with Pagerduty:
 
     require 'pagerduty'
     p = Pagerduty.new "your_pagerduty_service_key"
