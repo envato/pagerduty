@@ -14,9 +14,9 @@ class Pagerduty
   
   attr_reader :service_key, :incident_key
   
-  def initialize(service_key)
+  def initialize(service_key, incident_key = nil)
     @service_key = service_key
-    @incident_key = nil
+    @incident_key = incident_key
   end
   
   def trigger(description, details = {})
