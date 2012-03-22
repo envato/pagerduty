@@ -1,5 +1,6 @@
-require 'json'
-require 'curb'
+require 'rubygems'
+require 'bundler/setup'
+require 'curl'
 
 class PagerdutyException < Exception
   attr_reader :pagerduty_instance, :api_response
