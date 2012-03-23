@@ -6,3 +6,4 @@ rdoc
 *.swo
 pkg
 .bundle
+.rvmrc
