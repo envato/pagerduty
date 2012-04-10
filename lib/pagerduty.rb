@@ -1,5 +1,5 @@
 require 'json'
-require 'curb'
+require 'net/http'
 
 class PagerdutyException < Exception
   attr_reader :pagerduty_instance, :api_response
@@ -35,10 +35,21 @@ protected
     params = { :event_type => event_type, :service_key => @service_key, :description => description, :details => details }
     params.merge!({ :incident_key => @incident_key }) unless @incident_key == nil
 
-    curl = Curl::Easy.new
-    curl.url = "http://events.pagerduty.com/generic/2010-04-15/create_event.json"
-    curl.http_post JSON.generate(params)
-    JSON.parse curl.body_str
+    url = URI.parse("http://events.pagerduty.com/generic/2010-04-15/create_event.json")
+
+
+    http = Net::HTTP.new(url.host, url.port)
+
+    req = Net::HTTP::Post.new(url.request_uri)
+    req.body = JSON.generate(params)
+
+    res = http.request(req)
+    case res
+    when Net::HTTPSuccess, Net::HTTPRedirection
+      JSON.parse(res.body)
+    else
+      res.error!
+    end
   end
 
 end
