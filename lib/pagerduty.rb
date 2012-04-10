@@ -1,5 +1,6 @@
-require 'json'
-require 'curb'
+require 'rubygems'
+require 'bundler/setup'
+require 'curl'
 
 class PagerdutyException < Exception
   attr_reader :pagerduty_instance, :api_response
@@ -20,7 +21,7 @@ class Pagerduty
   end
   
   def trigger(description, details = {})
-    resp = api_call("trigger", description, details = {})
+    resp = api_call("trigger", description, details)
     throw PagerdutyException.new(self, resp) unless resp["status"] == "success"
     
     PagerdutyIncident.new @service_key, resp["incident_key"]
