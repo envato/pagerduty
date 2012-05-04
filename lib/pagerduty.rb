@@ -21,7 +21,7 @@ class Pagerduty
 
   def trigger(description, details = {})
     resp = api_call("trigger", description, details = {})
-    throw PagerdutyException.new(self, resp) unless resp["status"] == "success"
+    raise PagerdutyException.new(self, resp) unless resp["status"] == "success"
 
     PagerdutyIncident.new @service_key, resp["incident_key"]
   end
