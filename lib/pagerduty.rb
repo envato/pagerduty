@@ -1,5 +1,6 @@
 require 'json'
 require 'net/http'
+require 'pagerduty/version'
 
 class PagerdutyException < Exception
   attr_reader :pagerduty_instance, :api_response
