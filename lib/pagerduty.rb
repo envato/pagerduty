@@ -63,14 +63,14 @@ class PagerdutyIncident < Pagerduty
   end
 
   def acknowledge(description, details = {})
-    resp = api_call("acknowledge", description, details = {})
+    resp = api_call("acknowledge", description, details)
     throw PagerdutyException.new(self, resp) unless resp["status"] == "success"
 
     self
   end
 
   def resolve(description, details = {})
-    resp = api_call("resolve", description, details = {})
+    resp = api_call("resolve", description, details)
     throw PagerdutyException.new(self, resp) unless resp["status"] == "success"
 
     self
