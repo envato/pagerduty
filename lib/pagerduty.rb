@@ -1,6 +1,9 @@
 require 'json'
 require 'net/http'
+require 'net/https'
 require 'pagerduty/version'
+
+RootCA = '/etc/ssl/certs'
 
 class PagerdutyException < Exception
   attr_reader :pagerduty_instance, :api_response
@@ -36,10 +39,16 @@ protected
     params = { :event_type => event_type, :service_key => @service_key, :description => description, :details => details }
     params.merge!({ :incident_key => @incident_key }) unless @incident_key == nil
 
-    url = URI.parse("http://events.pagerduty.com/generic/2010-04-15/create_event.json")
-
-
+    url = URI.parse("https://events.pagerduty.com/generic/2010-04-15/create_event.json")
     http = Net::HTTP.new(url.host, url.port)
+    http.use_ssl = (url.scheme == 'https')
+    if (File.directory?(RootCA) && http.use_ssl?)
+      http.ca_path = RootCA
+      http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+      http.verify_depth = 5
+    else
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    end
 
     req = Net::HTTP::Post.new(url.request_uri)
     req.body = JSON.generate(params)
