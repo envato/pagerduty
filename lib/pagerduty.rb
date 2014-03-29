@@ -3,8 +3,6 @@ require 'net/http'
 require 'net/https'
 require 'pagerduty/version'
 
-RootCA = '/etc/ssl/certs'
-
 class PagerdutyException < Exception
   attr_reader :pagerduty_instance, :api_response
 
@@ -42,8 +40,9 @@ protected
     url = URI.parse("https://events.pagerduty.com/generic/2010-04-15/create_event.json")
     http = Net::HTTP.new(url.host, url.port)
     http.use_ssl = (url.scheme == 'https')
-    if (File.directory?(RootCA) && http.use_ssl?)
-      http.ca_path = RootCA
+    rootca = '/etc/ssl/certs'
+    if (File.directory?(rootca) && http.use_ssl?)
+      http.ca_path = rootca
       http.verify_mode = OpenSSL::SSL::VERIFY_PEER
       http.verify_depth = 5
     else
