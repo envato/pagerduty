@@ -40,6 +40,9 @@ protected
     url = URI.parse("https://events.pagerduty.com/generic/2010-04-15/create_event.json")
     http = Net::HTTP.new(url.host, url.port)
     http.use_ssl = (url.scheme == 'https')
+    http.open_timeout = 60
+    http.read_timeout = 60
+
     rootca = '/etc/ssl/certs'
     if (File.directory?(rootca) && http.use_ssl?)
       http.ca_path = rootca
