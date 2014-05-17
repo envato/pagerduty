@@ -28,8 +28,6 @@ module Pagerduty::HttpTransport
       http = Net::HTTP.new(HOST, PORT)
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-      http.ca_path = "/etc/ssl/certs"
-      http.verify_depth = 5
       http
     end
 
