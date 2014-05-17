@@ -22,4 +22,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "bundler", "~> 1.6"
   gem.add_development_dependency "rake"
   gem.add_development_dependency "minitest-given"
+  gem.add_development_dependency "mocha"
 end
