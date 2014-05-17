@@ -195,14 +195,13 @@ describe Pagerduty do
     Net::HTTPBadRequest.new 1.1, "400", "Bad Request"
   end
 
-end
+  describe PagerdutyException do
+    Given(:pagerduty_instance) { mock }
+    Given(:api_response) { mock }
 
-describe PagerdutyException do
-  Given(:pagerduty_instance) { mock }
-  Given(:api_response) { mock }
+    When(:pagerduty_exception) { PagerdutyException.new(pagerduty_instance, api_response) }
 
-  When(:pagerduty_exception) { PagerdutyException.new(pagerduty_instance, api_response) }
-
-  Then { pagerduty_exception.pagerduty_instance == pagerduty_instance }
-  Then { pagerduty_exception.api_response == api_response }
+    Then { pagerduty_exception.pagerduty_instance == pagerduty_instance }
+    Then { pagerduty_exception.api_response == api_response }
+  end
 end
