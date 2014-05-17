@@ -51,31 +51,17 @@ describe Pagerduty do
         }
         JSON
 
-        When(:error) {
-          begin
-            pagerduty.trigger(description, details)
-          rescue Exception => exception
-            exception
-          end
-        }
+        When(:incident) { pagerduty.trigger(description, details) }
 
-        Then { error.must_be_kind_of PagerdutyException }
-        Then { error.pagerduty_instance == pagerduty }
-        Then { error.api_response == { "status" => "failure", "message" => "Event not processed" } }
+        Then { incident.must_raise PagerdutyException }
       end
 
       context "PagerDuty responds with HTTP bad request" do
         Given { http.stubs(:request).returns(bad_request) }
 
-        When(:error) {
-          begin
-            pagerduty.trigger(description, details)
-          rescue Exception => exception
-            exception
-          end
-        }
+        When(:incident) { pagerduty.trigger(description, details) }
 
-        Then { error.must_be_kind_of Net::HTTPServerException }
+        Then { incident.must_raise Net::HTTPServerException }
       end
     end
   end
