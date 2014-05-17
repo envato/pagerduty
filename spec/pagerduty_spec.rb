@@ -27,11 +27,11 @@ describe Pagerduty do
 
       context "PagerDuty successfully creates the incident" do
         Given { http.stubs(:request).returns(response_with_body(<<-JSON)) }
-        {
-          "status": "success",
-          "incident_key": "My Incident Key",
-          "message": "Event processed"
-        }
+          {
+            "status": "success",
+            "incident_key": "My Incident Key",
+            "message": "Event processed"
+          }
         JSON
 
         When(:incident) { pagerduty.trigger(description, details) }
@@ -43,10 +43,10 @@ describe Pagerduty do
 
       context "PagerDuty fails to create the incident" do
         Given { http.stubs(:request).returns(response_with_body(<<-JSON)) }
-        {
-          "status": "failure",
-          "message": "Event not processed"
-        }
+          {
+            "status": "failure",
+            "message": "Event not processed"
+          }
         JSON
 
         When(:incident) { pagerduty.trigger(description, details) }
