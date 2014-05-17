@@ -15,14 +15,12 @@ describe Pagerduty do
     Given(:details) { { key: "value" } }
 
     describe "provides the correct request" do
-      context "PagerDuty successfully creates the incident" do
-        Given { http.stubs(:request).returns(standard_response) }
-        Given { post.expects(:body=).with '{"event_type":"trigger","service_key":"a-test-service-key","description":"a-test-description","details":{"key":"value"}}' }
+      Given { http.stubs(:request).returns(standard_response) }
+      Given { post.expects(:body=).with '{"event_type":"trigger","service_key":"a-test-service-key","description":"a-test-description","details":{"key":"value"}}' }
 
-        When(:incident) { pagerduty.trigger(description, details) }
+      When(:incident) { pagerduty.trigger(description, details) }
 
-        Then { incident } # calls expected methods
-      end
+      Then { incident } # calls expected methods
     end
 
     describe "can handle responses" do
@@ -128,6 +126,56 @@ describe Pagerduty do
           When(:acknowledge) { incident.acknowledge(description, details) }
 
           Then { acknowledge.must_raise Net::HTTPServerException }
+        end
+      end
+    end
+
+    describe "#resolve" do
+
+      describe "provides the correct request" do
+        Given { http.stubs(:request).returns(standard_response) }
+        Given { post.expects(:body=).with '{"event_type":"resolve","service_key":"a-test-service-key","description":"a-test-description","details":{"key":"value"},"incident_key":"a-test-incident-key"}' }
+
+        When(:resolve) { incident.resolve(description, details) }
+
+        Then { resolve } # calls expected methods
+      end
+
+      describe "can handle responses" do
+
+        context "PagerDuty successfully creates the incident" do
+          Given { http.stubs(:request).returns(response_with_body(<<-JSON)) }
+            {
+              "status": "success",
+              "incident_key": "a-test-incident-key",
+              "message": "Event processed"
+            }
+          JSON
+
+          When(:resolve) { incident.resolve(description, details) }
+
+          Then { resolve.must_equal incident}
+        end
+
+        context "PagerDuty fails to create the incident" do
+          Given { http.stubs(:request).returns(response_with_body(<<-JSON)) }
+            {
+              "status": "failure",
+              "message": "Event not processed"
+            }
+          JSON
+
+          When(:resolve) { incident.resolve(description, details) }
+
+          Then { resolve.must_raise PagerdutyException }
+        end
+
+        context "PagerDuty responds with HTTP bad request" do
+          Given { http.stubs(:request).returns(bad_request) }
+
+          When(:resolve) { incident.resolve(description, details) }
+
+          Then { resolve.must_raise Net::HTTPServerException }
         end
       end
     end
