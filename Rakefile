@@ -1,6 +1,14 @@
 require "bundler/gem_tasks"
+require "rake/testtask"
+require "rdoc/task"
 
-require 'rdoc/task'
+task :default => :spec
+
+Rake::TestTask.new(:spec) do |t|
+  t.libs << "spec"
+  t.test_files = Dir.glob("spec/**/*_spec.rb")
+end
+
 RDoc::Task.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
@@ -9,4 +17,3 @@ RDoc::Task.new do |rdoc|
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
-
