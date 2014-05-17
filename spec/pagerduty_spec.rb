@@ -7,60 +7,76 @@ describe Pagerduty do
 
   Given(:http) { stub_everything }
   Given { Net::HTTP.stubs(:new).returns(http) }
+  Given(:post) { stub_everything(:body=) }
+  Given { Net::HTTP::Post.stubs(:new).returns(post) }
 
   describe "#trigger" do
     Given(:description) { "a-test-description" }
     Given(:details) { { key: "value" } }
 
-    context "PagerDuty successfully creates the incident" do
-      Given { http.stubs(:request).returns(response_with_body(<<-JSON)) }
+    describe "provides the correct request" do
+      context "PagerDuty successfully creates the incident" do
+        Given { http.stubs(:request).returns(standard_response) }
+        Given { post.expects(:body=).with '{"event_type":"trigger","service_key":"a-test-service-key","description":"a-test-description","details":{"key":"value"}}' }
+
+        When(:incident) { pagerduty.trigger(description, details) }
+
+        Then { incident } # calls expected methods
+      end
+    end
+
+    describe "can handle responses" do
+
+      context "PagerDuty successfully creates the incident" do
+        Given { http.stubs(:request).returns(response_with_body(<<-JSON)) }
         {
           "status": "success",
           "incident_key": "My Incident Key",
           "message": "Event processed"
         }
-      JSON
+        JSON
 
-      When(:incident) { pagerduty.trigger(description, details) }
+        When(:incident) { pagerduty.trigger(description, details) }
 
-      Then { incident.must_be_kind_of PagerdutyIncident }
-      Then { incident.service_key.must_equal service_key }
-      Then { incident.incident_key.must_equal "My Incident Key" }
-    end
+        Then { incident.must_be_kind_of PagerdutyIncident }
+        Then { incident.service_key.must_equal service_key }
+        Then { incident.incident_key.must_equal "My Incident Key" }
+      end
 
-    context "PagerDuty fails to create the incident" do
-      Given { http.stubs(:request).returns(response_with_body(<<-JSON)) }
+      context "PagerDuty fails to create the incident" do
+        Given { http.stubs(:request).returns(response_with_body(<<-JSON)) }
         {
           "status": "failure",
           "message": "Event not processed"
         }
-      JSON
+        JSON
 
-      When(:error) {
-        begin
-          pagerduty.trigger(description, details)
-        rescue Exception => exception
-          exception
-        end
-      }
+        When(:error) {
+          begin
+            pagerduty.trigger(description, details)
+          rescue Exception => exception
+            exception
+          end
+        }
 
-      Then { error.must_be_kind_of PagerdutyException }
-      Then { error.pagerduty_instance == pagerduty }
-      Then { error.api_response == { "status" => "failure", "message" => "Event not processed" } }
-    end
+        Then { error.must_be_kind_of PagerdutyException }
+        Then { error.pagerduty_instance == pagerduty }
+        Then { error.api_response == { "status" => "failure", "message" => "Event not processed" } }
+      end
 
-    context "PagerDuty responds with HTTP bad request" do
-      Given { http.stubs(:request).returns(bad_request) }
+      context "PagerDuty responds with HTTP bad request" do
+        Given { http.stubs(:request).returns(bad_request) }
 
-      When(:error) {
-        begin
-          pagerduty.trigger(description, details)
-        rescue Exception => exception
-          exception
-        end
-      }
+        When(:error) {
+          begin
+            pagerduty.trigger(description, details)
+          rescue Exception => exception
+            exception
+          end
+        }
 
-      Then { error.must_be_kind_of Net::HTTPServerException }
+        Then { error.must_be_kind_of Net::HTTPServerException }
+      end
     end
   end
 
@@ -72,6 +88,10 @@ describe Pagerduty do
     Then { incident.must_be_kind_of PagerdutyIncident }
     Then { incident.service_key.must_equal service_key }
     Then { incident.incident_key.must_equal incident_key }
+  end
+
+  def standard_response
+    response_with_body '{ "status": "success", "incident_key": "My Incident Key" }'
   end
 
   def response_with_body(body)
