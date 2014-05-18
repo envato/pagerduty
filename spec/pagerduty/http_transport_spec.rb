@@ -54,6 +54,13 @@ describe Pagerduty::HttpTransport do
         Then { expect(response).to have_raised Net::HTTPServerException }
       end
     end
+
+    describe "HTTPS use" do
+      Then { expect(http).to have_received(:use_ssl=).with(true) }
+      Then { expect(http).to have_received(:verify_mode=).with(OpenSSL::SSL::VERIFY_PEER) }
+      Then { expect(http).to_not have_received(:ca_path=) }
+      Then { expect(http).to_not have_received(:verify_depth=) }
+    end
   end
 
   def standard_response
