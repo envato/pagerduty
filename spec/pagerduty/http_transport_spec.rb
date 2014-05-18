@@ -21,7 +21,11 @@ describe Pagerduty::HttpTransport do
     When(:response) { http_transport.send(payload) }
 
     describe "provides the correct request" do
-      Then { expect(post).to have_received(:body=).with '{"event_type":"trigger","service_key":"test-srvc-key","description":"test-desc","details":{"key":"value"}}' }
+      Then {
+        expect(post).to have_received(:body=).with(
+          '{"event_type":"trigger","service_key":"test-srvc-key","description":"test-desc","details":{"key":"value"}}'
+        )
+      }
     end
 
     describe "handles all responses" do
