@@ -1,12 +1,11 @@
 require "bundler/gem_tasks"
-require "rake/testtask"
+require "rspec/core/rake_task"
 require "rdoc/task"
 
 task :default => :spec
 
-Rake::TestTask.new(:spec) do |t|
-  t.libs << "spec"
-  t.test_files = Dir.glob("spec/**/*_spec.rb")
+RSpec::Core::RakeTask.new(:spec) do |t|
+  t.verbose = false
 end
 
 RDoc::Task.new do |rdoc|
