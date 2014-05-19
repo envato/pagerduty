@@ -23,7 +23,7 @@ class Pagerduty
 
   def trigger(description, details = {})
     resp = api_call("trigger", description, details)
-    throw PagerdutyException.new(self, resp) unless resp["status"] == "success"
+    raise PagerdutyException.new(self, resp) unless resp["status"] == "success"
 
     PagerdutyIncident.new @service_key, resp["incident_key"]
   end
@@ -75,14 +75,14 @@ class PagerdutyIncident < Pagerduty
 
   def acknowledge(description, details = {})
     resp = api_call("acknowledge", description, details)
-    throw PagerdutyException.new(self, resp) unless resp["status"] == "success"
+    raise PagerdutyException.new(self, resp) unless resp["status"] == "success"
 
     self
   end
 
   def resolve(description, details = {})
     resp = api_call("resolve", description, details)
-    throw PagerdutyException.new(self, resp) unless resp["status"] == "success"
+    raise PagerdutyException.new(self, resp) unless resp["status"] == "success"
 
     self
   end
