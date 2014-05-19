@@ -1,7 +1,5 @@
-require 'json'
-require 'net/http'
-require 'net/https'
 require 'pagerduty/version'
+require 'pagerduty/http_transport'
 
 class PagerdutyException < Exception
   attr_reader :pagerduty_instance, :api_response
@@ -33,37 +31,23 @@ class Pagerduty
   end
 
 protected
+
   def api_call(event_type, description, details = {})
-    params = { :event_type => event_type, :service_key => @service_key, :description => description, :details => details }
-    params.merge!({ :incident_key => @incident_key }) unless @incident_key == nil
-
-    url = URI.parse("https://events.pagerduty.com/generic/2010-04-15/create_event.json")
-    http = Net::HTTP.new(url.host, url.port)
-    http.use_ssl = (url.scheme == 'https')
-    http.open_timeout = 60
-    http.read_timeout = 60
-
-    rootca = '/etc/ssl/certs'
-    if (File.directory?(rootca) && http.use_ssl?)
-      http.ca_path = rootca
-      http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-      http.verify_depth = 5
-    else
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-    end
-
-    req = Net::HTTP::Post.new(url.request_uri)
-    req.body = JSON.generate(params)
-
-    res = http.request(req)
-    case res
-    when Net::HTTPSuccess, Net::HTTPRedirection
-      JSON.parse(res.body)
-    else
-      res.error!
-    end
+    params = {
+      :event_type => event_type,
+      :service_key => @service_key,
+      :description => description,
+      :details => details
+    }
+    params[:incident_key] = @incident_key if @incident_key
+    Pagerduty.transport.send(params)
   end
 
+  class << self
+    def transport
+      Pagerduty::HttpTransport
+    end
+  end
 end
 
 class PagerdutyIncident < Pagerduty
