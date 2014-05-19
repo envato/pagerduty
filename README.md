@@ -1,6 +1,9 @@
 pagerduty
 =========
 
+[![Gem Version](https://badge.fury.io/rb/pagerduty.svg)](http://badge.fury.io/rb/pagerduty)
+[![Build Status](https://travis-ci.org/envato/pagerduty.svg?branch=master)](https://travis-ci.org/envato/pagerduty)
+
 Provides a simple interface for calling into the [Pagerduty](http://pagerduty.com) API.
 
 Installation
