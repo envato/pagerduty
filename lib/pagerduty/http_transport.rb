@@ -28,6 +28,8 @@ module Pagerduty::HttpTransport
       http = Net::HTTP.new(HOST, PORT)
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+      http.open_timeout = 60
+      http.read_timeout = 60
       http
     end
 
