@@ -65,6 +65,11 @@ describe Pagerduty::HttpTransport do
       Then { expect(http).to_not have_received(:ca_path=) }
       Then { expect(http).to_not have_received(:verify_depth=) }
     end
+
+    describe "timeouts" do
+      Then { expect(http).to have_received(:open_timeout=).with(60) }
+      Then { expect(http).to have_received(:read_timeout=).with(60) }
+    end
   end
 
   def standard_response
