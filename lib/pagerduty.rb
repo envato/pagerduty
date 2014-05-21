@@ -12,17 +12,15 @@ end
 
 class Pagerduty
 
-  attr_reader :service_key, :incident_key
+  attr_reader :service_key
 
-  def initialize(service_key, incident_key = nil)
+  def initialize(service_key)
     @service_key = service_key
-    @incident_key = incident_key
   end
 
   def trigger(description, details = {})
     resp = api_call("trigger", :description => description, :details => details)
     raise PagerdutyException.new(self, resp) unless resp["status"] == "success"
-
     PagerdutyIncident.new @service_key, resp["incident_key"]
   end
 
@@ -37,7 +35,6 @@ protected
       :service_key => service_key,
       :event_type => event_type,
     )
-    args[:incident_key] = @incident_key if @incident_key
     Pagerduty.transport.send(args)
   end
 
@@ -49,6 +46,7 @@ protected
 end
 
 class PagerdutyIncident < Pagerduty
+  attr_reader :incident_key
 
   def initialize(service_key, incident_key)
     super service_key
@@ -56,16 +54,14 @@ class PagerdutyIncident < Pagerduty
   end
 
   def acknowledge(description, details = {})
-    resp = api_call("acknowledge", :description => description, :details => details)
+    resp = api_call("acknowledge", :incident_key => @incident_key, :description => description, :details => details)
     raise PagerdutyException.new(self, resp) unless resp["status"] == "success"
-
     self
   end
 
   def resolve(description, details = {})
-    resp = api_call("resolve", :description => description, :details => details)
+    resp = api_call("resolve", :incident_key => @incident_key, :description => description, :details => details)
     raise PagerdutyException.new(self, resp) unless resp["status"] == "success"
-
     self
   end
 
