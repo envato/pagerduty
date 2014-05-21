@@ -18,8 +18,8 @@ class Pagerduty
     @service_key = service_key
   end
 
-  def trigger(description, details = {})
-    resp = api_call("trigger", :description => description, :details => details)
+  def trigger(args = {})
+    resp = api_call("trigger", args)
     ensure_success(resp)
     PagerdutyIncident.new @service_key, resp["incident_key"]
   end
