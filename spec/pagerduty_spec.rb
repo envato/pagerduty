@@ -9,18 +9,27 @@ describe Pagerduty do
   Given { Pagerduty.stub(:transport => transport) }
 
   describe "#trigger" do
-    Given(:description) { "a-test-description" }
-    Given(:details) { { key: "value" } }
 
     describe "provides the correct request" do
       Given { transport.stub(:send => standard_response) }
-      When(:incident) { pagerduty.trigger(:description => description, :details => details) }
+      When(:incident) {
+        pagerduty.trigger(
+          description:  "a-test-description",
+          incident_key: "a-test-incident-key",
+          client:       "a-test-client",
+          client_url:   "a-test-client-url",
+          details:      { key: "value" },
+        )
+      }
       Then {
         expect(transport).to have_received(:send).with(
-          event_type: "trigger",
-          service_key: "a-test-service-key",
-          description: "a-test-description",
-          details: { key: "value" }
+          service_key:  "a-test-service-key",
+          event_type:   "trigger",
+          description:  "a-test-description",
+          incident_key: "a-test-incident-key",
+          client:       "a-test-client",
+          client_url:   "a-test-client-url",
+          details:      { key: "value" },
         )
       }
     end
@@ -35,7 +44,7 @@ describe Pagerduty do
             "message" => "Event processed",
           })
         }
-        When(:incident) { pagerduty.trigger(:description => description) }
+        When(:incident) { pagerduty.trigger(:description => "description") }
         Then { expect(incident).to be_a PagerdutyIncident }
         Then { incident.service_key == service_key }
         Then { incident.incident_key == "My Incident Key" }
@@ -48,13 +57,13 @@ describe Pagerduty do
             "message" => "Event not processed",
           })
         }
-        When(:incident) { pagerduty.trigger(:description => description) }
+        When(:incident) { pagerduty.trigger(:description => "description") }
         Then { expect(incident).to have_raised PagerdutyException }
       end
 
       context "PagerDuty responds with HTTP bad request" do
         Given { transport.stub(:send).and_raise(Net::HTTPServerException.new(nil, nil)) }
-        When(:incident) { pagerduty.trigger(:description => description) }
+        When(:incident) { pagerduty.trigger(:description => "description") }
         Then { expect(incident).to have_raised Net::HTTPServerException }
       end
     end
