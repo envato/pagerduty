@@ -14,7 +14,7 @@ describe Pagerduty do
       Given { transport.stub(:send => standard_response) }
       When(:incident) {
         pagerduty.trigger(
-          description:  "a-test-description",
+          "a-test-description",
           incident_key: "a-test-incident-key",
           client:       "a-test-client",
           client_url:   "a-test-client-url",
