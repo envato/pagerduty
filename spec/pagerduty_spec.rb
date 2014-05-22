@@ -80,23 +80,47 @@ describe Pagerduty do
   describe PagerdutyIncident do
     Given(:incident) { PagerdutyIncident.new(service_key, incident_key) }
     Given(:incident_key) { "a-test-incident-key" }
-    Given(:description) { "a-test-description" }
-    Given(:details) { { key: "value" } }
 
     describe "#acknowledge" do
 
       describe "provides the correct request" do
         Given { transport.stub(:send => standard_response) }
-        When(:acknowledge) { incident.acknowledge(description, details) }
-        Then {
-          expect(transport).to have_received(:send).with(
-            event_type: "acknowledge",
-            service_key: "a-test-service-key",
-            description: "a-test-description",
-            details: { key: "value" },
-            incident_key: "a-test-incident-key",
-          )
-        }
+
+        context "no args" do
+          When(:acknowledge) { incident.acknowledge }
+          Then {
+            expect(transport).to have_received(:send).with(
+              event_type: "acknowledge",
+              service_key: "a-test-service-key",
+              incident_key: "a-test-incident-key",
+            )
+          }
+        end
+
+        context "a description" do
+          When(:acknowledge) { incident.acknowledge("test-description") }
+          Then {
+            expect(transport).to have_received(:send).with(
+              event_type: "acknowledge",
+              service_key: "a-test-service-key",
+              incident_key: "a-test-incident-key",
+              description: "test-description",
+            )
+          }
+        end
+
+        context "a description and details" do
+          When(:acknowledge) { incident.acknowledge("test-description", { my: "detail" }) }
+          Then {
+            expect(transport).to have_received(:send).with(
+              event_type: "acknowledge",
+              service_key: "a-test-service-key",
+              incident_key: "a-test-incident-key",
+              description: "test-description",
+              details: { my: "detail" },
+            )
+          }
+        end
       end
 
       describe "handles all responses" do
@@ -109,7 +133,7 @@ describe Pagerduty do
               "message" => "Event acknowledged",
             })
           }
-          When(:acknowledge) { incident.acknowledge(description, details) }
+          When(:acknowledge) { incident.acknowledge }
           Then { expect(acknowledge).to be incident}
         end
 
@@ -121,13 +145,13 @@ describe Pagerduty do
               "message" => "Event not acknowledged",
             })
           }
-          When(:acknowledge) { incident.acknowledge(description, details) }
+          When(:acknowledge) { incident.acknowledge }
           Then { expect(acknowledge).to have_failed PagerdutyException }
         end
 
         context "PagerDuty responds with HTTP bad request" do
           Given { transport.stub(:send).and_raise(Net::HTTPServerException.new(nil, nil)) }
-          When(:acknowledge) { incident.acknowledge(description, details) }
+          When(:acknowledge) { incident.acknowledge }
           Then { expect(acknowledge).to have_failed Net::HTTPServerException }
         end
       end
@@ -137,16 +161,42 @@ describe Pagerduty do
 
       describe "provides the correct request" do
         Given { transport.stub(:send => standard_response) }
-        When(:resolve) { incident.resolve(description, details) }
-        Then {
-          expect(transport).to have_received(:send).with(
-            event_type: "resolve",
-            service_key: "a-test-service-key",
-            description: "a-test-description",
-            details: { key: "value" },
-            incident_key: "a-test-incident-key",
-          )
-        }
+
+        context "no args" do
+          When(:resolve) { incident.resolve }
+          Then {
+            expect(transport).to have_received(:send).with(
+              event_type: "resolve",
+              service_key: "a-test-service-key",
+              incident_key: "a-test-incident-key",
+            )
+          }
+        end
+
+        context "a description" do
+          When(:resolve) { incident.resolve("test-description") }
+          Then {
+            expect(transport).to have_received(:send).with(
+              event_type: "resolve",
+              service_key: "a-test-service-key",
+              incident_key: "a-test-incident-key",
+              description: "test-description",
+            )
+          }
+        end
+
+        context "a description and details" do
+          When(:resolve) { incident.resolve("test-description", { my: "detail" }) }
+          Then {
+            expect(transport).to have_received(:send).with(
+              event_type: "resolve",
+              service_key: "a-test-service-key",
+              incident_key: "a-test-incident-key",
+              description: "test-description",
+              details: { my: "detail" },
+            )
+          }
+        end
       end
 
       describe "handles all responses" do
@@ -159,7 +209,7 @@ describe Pagerduty do
               "message" => "Event resolved",
             })
           }
-          When(:resolve) { incident.resolve(description, details) }
+          When(:resolve) { incident.resolve }
           Then { expect(resolve).to be incident}
         end
 
@@ -170,13 +220,13 @@ describe Pagerduty do
               "message" => "Event not resolved",
             })
           }
-          When(:resolve) { incident.resolve(description, details) }
+          When(:resolve) { incident.resolve }
           Then { expect(resolve).to have_failed PagerdutyException }
         end
 
         context "PagerDuty responds with HTTP bad request" do
           Given { transport.stub(:send).and_raise(Net::HTTPServerException.new(nil, nil)) }
-          When(:resolve) { incident.resolve(description, details) }
+          When(:resolve) { incident.resolve }
           Then { expect(resolve).to have_failed Net::HTTPServerException }
         end
       end

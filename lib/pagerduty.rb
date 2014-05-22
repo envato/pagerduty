@@ -59,14 +59,21 @@ class PagerdutyIncident < Pagerduty
     @incident_key = incident_key
   end
 
-  def acknowledge(description, details = {})
-    resp = api_call("acknowledge", :incident_key => @incident_key, :description => description, :details => details)
-    ensure_success(resp)
-    self
+  def acknowledge(description = nil, details = nil)
+    modify_incident("acknowledge", description, details)
   end
 
-  def resolve(description, details = {})
-    resp = api_call("resolve", :incident_key => @incident_key, :description => description, :details => details)
+  def resolve(description = nil, details = nil)
+    modify_incident("resolve", description, details)
+  end
+
+private
+
+  def modify_incident(event_type, description, details)
+    options = { :incident_key => incident_key }
+    options[:description] = description if description
+    options[:details] = details if details
+    resp = api_call(event_type, options)
     ensure_success(resp)
     self
   end
