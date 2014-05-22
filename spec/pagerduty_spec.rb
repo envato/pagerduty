@@ -12,26 +12,40 @@ describe Pagerduty do
 
     describe "provides the correct request" do
       Given { transport.stub(:send => standard_response) }
-      When(:incident) {
-        pagerduty.trigger(
-          "a-test-description",
-          incident_key: "a-test-incident-key",
-          client:       "a-test-client",
-          client_url:   "a-test-client-url",
-          details:      { key: "value" },
-        )
-      }
-      Then {
-        expect(transport).to have_received(:send).with(
-          service_key:  "a-test-service-key",
-          event_type:   "trigger",
-          description:  "a-test-description",
-          incident_key: "a-test-incident-key",
-          client:       "a-test-client",
-          client_url:   "a-test-client-url",
-          details:      { key: "value" },
-        )
-      }
+
+      context "no options" do
+        When(:incident) { pagerduty.trigger("a-test-description") }
+        Then {
+          expect(transport).to have_received(:send).with(
+            service_key: "a-test-service-key",
+            event_type:  "trigger",
+            description: "a-test-description",
+          )
+        }
+      end
+
+      context "all options" do
+        When(:incident) {
+          pagerduty.trigger(
+            "a-test-description",
+            incident_key: "a-test-incident-key",
+            client:       "a-test-client",
+            client_url:   "a-test-client-url",
+            details:      { key: "value" },
+          )
+        }
+        Then {
+          expect(transport).to have_received(:send).with(
+            service_key:  "a-test-service-key",
+            event_type:   "trigger",
+            description:  "a-test-description",
+            incident_key: "a-test-incident-key",
+            client:       "a-test-client",
+            client_url:   "a-test-client-url",
+            details:      { key: "value" },
+          )
+        }
+      end
     end
 
     describe "handles all responses" do
