@@ -58,7 +58,7 @@ describe Pagerduty do
             "message" => "Event processed",
           })
         }
-        When(:incident) { pagerduty.trigger(:description => "description") }
+        When(:incident) { pagerduty.trigger("description") }
         Then { expect(incident).to be_a PagerdutyIncident }
         Then { incident.service_key == service_key }
         Then { incident.incident_key == "My Incident Key" }
@@ -71,13 +71,13 @@ describe Pagerduty do
             "message" => "Event not processed",
           })
         }
-        When(:incident) { pagerduty.trigger(:description => "description") }
+        When(:incident) { pagerduty.trigger("description") }
         Then { expect(incident).to have_raised PagerdutyException }
       end
 
       context "PagerDuty responds with HTTP bad request" do
         Given { transport.stub(:send).and_raise(Net::HTTPServerException.new(nil, nil)) }
-        When(:incident) { pagerduty.trigger(:description => "description") }
+        When(:incident) { pagerduty.trigger("description") }
         Then { expect(incident).to have_raised Net::HTTPServerException }
       end
     end
