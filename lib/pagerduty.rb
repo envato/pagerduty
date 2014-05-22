@@ -21,11 +21,11 @@ class Pagerduty
   def trigger(description, options = {})
     resp = api_call("trigger", options.merge(:description => description))
     ensure_success(resp)
-    PagerdutyIncident.new @service_key, resp["incident_key"]
+    PagerdutyIncident.new service_key, resp["incident_key"]
   end
 
   def get_incident(incident_key)
-    PagerdutyIncident.new @service_key, incident_key
+    PagerdutyIncident.new service_key, incident_key
   end
 
 protected
