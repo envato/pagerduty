@@ -1,20 +1,25 @@
-pagerduty
-=========
+# pagerduty
 
 [![Gem Version](https://badge.fury.io/rb/pagerduty.svg)](http://badge.fury.io/rb/pagerduty)
 [![Build Status](https://travis-ci.org/envato/pagerduty.svg?branch=master)](https://travis-ci.org/envato/pagerduty)
 
 Provides a simple interface for calling into the [Pagerduty](http://pagerduty.com) API.
 
-Installation
-------------
+## Installation
 
-Install pagerduty with this command:
+Add this line to your application's Gemfile:
 
-    gem install pagerduty
+    gem 'pagerduty'
 
-Usage
------
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install pagerduty
+
+## Usage
 
 Pagerduty exposes three classes, `Pagerduty`, `PagerdutyIncident` and `PagerdutyException`. Instances of `PagerdutyIncident` are created and returned for every API call.
 
@@ -30,8 +35,10 @@ Additionally, all API methods (`trigger`, `acknowledge`, `resolve`) take an opti
 
 If the Pagerduty API does not return success, a `PagerdutyException` will be thrown which has the properties `pagerduty_instance` (the instance of either `Pagerduty` or `PagerdutyException` that caused the exception) and `api_response`, which is a hash representation of the JSON response from the Pagerduty API.
 
-Copyright
----------
+## Contributing
 
-Copyright (c) 2010 [Envato](http://envato.com) & [Charlie Somerville](http://charliesomerville.com). See LICENSE.txt for further details.
-
+1. Fork it ( https://github.com/[my-github-username]/pagerduty/fork )
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create a new Pull Request
