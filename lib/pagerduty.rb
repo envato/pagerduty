@@ -44,10 +44,9 @@ protected
     end
   end
 
-  class << self
-    def transport
-      Pagerduty::HttpTransport
-    end
+  # @api private
+  def self.transport
+    Pagerduty::HttpTransport
   end
 end
 
