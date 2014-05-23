@@ -12,35 +12,36 @@ end
 
 class Pagerduty
 
-  attr_reader :service_key, :incident_key
+  attr_reader :service_key
 
-  def initialize(service_key, incident_key = nil)
+  def initialize(service_key)
     @service_key = service_key
-    @incident_key = incident_key
   end
 
-  def trigger(description, details = {})
-    resp = api_call("trigger", description, details)
-    raise PagerdutyException.new(self, resp) unless resp["status"] == "success"
-
-    PagerdutyIncident.new @service_key, resp["incident_key"]
+  def trigger(description, options = {})
+    resp = api_call("trigger", options.merge(:description => description))
+    ensure_success(resp)
+    PagerdutyIncident.new service_key, resp["incident_key"]
   end
 
   def get_incident(incident_key)
-    PagerdutyIncident.new @service_key, incident_key
+    PagerdutyIncident.new service_key, incident_key
   end
 
 protected
 
-  def api_call(event_type, description, details = {})
-    params = {
+  def api_call(event_type, args)
+    args = args.merge(
+      :service_key => service_key,
       :event_type => event_type,
-      :service_key => @service_key,
-      :description => description,
-      :details => details
-    }
-    params[:incident_key] = @incident_key if @incident_key
-    Pagerduty.transport.send(params)
+    )
+    Pagerduty.transport.send(args)
+  end
+
+  def ensure_success(response)
+    unless response["status"] == "success"
+      raise PagerdutyException.new(self, response)
+    end
   end
 
   class << self
@@ -51,23 +52,29 @@ protected
 end
 
 class PagerdutyIncident < Pagerduty
+  attr_reader :incident_key
 
   def initialize(service_key, incident_key)
     super service_key
     @incident_key = incident_key
   end
 
-  def acknowledge(description, details = {})
-    resp = api_call("acknowledge", description, details)
-    raise PagerdutyException.new(self, resp) unless resp["status"] == "success"
-
-    self
+  def acknowledge(description = nil, details = nil)
+    modify_incident("acknowledge", description, details)
   end
 
-  def resolve(description, details = {})
-    resp = api_call("resolve", description, details)
-    raise PagerdutyException.new(self, resp) unless resp["status"] == "success"
+  def resolve(description = nil, details = nil)
+    modify_incident("resolve", description, details)
+  end
 
+private
+
+  def modify_incident(event_type, description, details)
+    options = { :incident_key => incident_key }
+    options[:description] = description if description
+    options[:details] = details if details
+    resp = api_call(event_type, options)
+    ensure_success(resp)
     self
   end
 
