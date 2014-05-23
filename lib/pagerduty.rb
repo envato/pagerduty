@@ -4,9 +4,10 @@ require 'pagerduty/http_transport'
 class PagerdutyException < StandardError
   attr_reader :pagerduty_instance, :api_response
 
-  def initialize(instance, resp)
+  def initialize(instance, response, message)
+    super(message)
     @pagerduty_instance = instance
-    @api_response = resp
+    @api_response = response
   end
 end
 
@@ -40,7 +41,7 @@ protected
 
   def ensure_success(response)
     unless response["status"] == "success"
-      raise PagerdutyException.new(self, response)
+      raise PagerdutyException.new(self, response, response["message"])
     end
   end
 
