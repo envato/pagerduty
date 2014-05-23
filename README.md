@@ -3,8 +3,8 @@
 [![Gem Version](https://badge.fury.io/rb/pagerduty.svg)](http://badge.fury.io/rb/pagerduty)
 [![Build Status](https://travis-ci.org/envato/pagerduty.svg?branch=master)](https://travis-ci.org/envato/pagerduty)
 
-Provides a ruby interface for integrating with the PagerDuty
-[Integration API](http://developer.pagerduty.com/documentation/integration/events).
+Provides a ruby interface for integrating with the [PagerDuty Integration
+API](http://developer.pagerduty.com/documentation/integration/events).
 
 ## Installation
 
@@ -35,6 +35,21 @@ incident = pagerduty.trigger("incident description")
 # Acknowledge and/or resolve the incident
 incident.acknowledge
 incident.resolve
+```
+
+There are a whole bunch of properties you can send to PagerDuty when triggering
+an incident. See the [PagerDuty
+documentation](http://developer.pagerduty.com/documentation/integration/events/trigger)
+for the specifics.
+
+```ruby
+pagerduty.trigger(
+  "incident description",
+  :incident_key => "my unique incident identifier",
+  :client       => "server in trouble",
+  :client_url   => "http://server.in.trouble",
+  :details      => { :my => "extra details" },
+)
 ```
 
 ## Contributing
