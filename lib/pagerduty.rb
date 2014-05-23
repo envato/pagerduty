@@ -51,6 +51,9 @@ class Pagerduty
   #
   # @return [PagerdutyIncident] The triggered incident.
   #
+  # @raise [PagerdutyException] If PagerDuty responds with a status that is not
+  #   "success"
+  #
   def trigger(description, options = {})
     resp = api_call("trigger", options.merge(:description => description))
     ensure_success(resp)
@@ -111,6 +114,9 @@ class PagerdutyIncident < Pagerduty
   #
   # @return [PagerdutyIncident] self
   #
+  # @raise [PagerdutyException] If PagerDuty responds with a status that is not
+  #   "success"
+  #
   def acknowledge(description = nil, details = nil)
     modify_incident("acknowledge", description, details)
   end
@@ -128,6 +134,9 @@ class PagerdutyIncident < Pagerduty
   #   included in the incident log.
   #
   # @return [PagerdutyIncident] self
+  #
+  # @raise [PagerdutyException] If PagerDuty responds with a status that is not
+  #   "success"
   #
   def resolve(description = nil, details = nil)
     modify_incident("resolve", description, details)
