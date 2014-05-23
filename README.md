@@ -3,7 +3,7 @@
 [![Gem Version](https://badge.fury.io/rb/pagerduty.svg)](http://badge.fury.io/rb/pagerduty)
 [![Build Status](https://travis-ci.org/envato/pagerduty.svg?branch=master)](https://travis-ci.org/envato/pagerduty)
 
-Provides a lightweight Ruby interface for integrating with the [PagerDuty
+Provides a lightweight Ruby interface for calling the [PagerDuty
 Integration API](http://developer.pagerduty.com/documentation/integration/events).
 
 ## Installation

@@ -6,10 +6,10 @@ require 'pagerduty/version'
 Gem::Specification.new do |gem|
   gem.name          = "pagerduty"
   gem.version       = Pagerduty::VERSION
-  gem.authors       = ["Charlie Somerville"]
-  gem.email         = ["charlie@charliesomerville.com"]
-  gem.description   = %q{Provides a simple interface for calling into the Pagerduty API}
-  gem.summary       = %q{Pagerduty API client library}
+  gem.authors       = ["Charlie Somerville", "Orien Madgwick"]
+  gem.email         = ["charlie@charliesomerville.com", "_@orien.io"]
+  gem.description   = %q{Provides a lightweight interface for calling the PagerDuty Integration API}
+  gem.summary       = %q{Pagerduty Integration API client library}
   gem.homepage      = "http://github.com/envato/pagerduty"
   gem.license       = "MIT"
 
