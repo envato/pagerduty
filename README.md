@@ -3,8 +3,8 @@
 [![Gem Version](https://badge.fury.io/rb/pagerduty.svg)](http://badge.fury.io/rb/pagerduty)
 [![Build Status](https://travis-ci.org/envato/pagerduty.svg?branch=master)](https://travis-ci.org/envato/pagerduty)
 
-Provides a ruby interface for integrating with the [PagerDuty Integration
-API](http://developer.pagerduty.com/documentation/integration/events).
+Provides a lightweight Ruby interface for integrating with the [PagerDuty
+Integration API](http://developer.pagerduty.com/documentation/integration/events).
 
 ## Installation
 
@@ -26,7 +26,7 @@ Or install it yourself as:
 # Don't forget to require the library
 require "pagerduty"
 
-# Instantiate a Pagerduty with your specific servce key
+# Instantiate a Pagerduty with your specific service key
 pagerduty = Pagerduty.new("<my-service-key>")
 
 # Trigger an incident
