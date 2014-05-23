@@ -49,12 +49,16 @@ class Pagerduty
   # @option options [Hash] :details An arbitrary hash containing any data you'd
   #   like included in the incident log.
   #
+  # @return [PagerdutyIncident] The triggered incident.
+  #
   def trigger(description, options = {})
     resp = api_call("trigger", options.merge(:description => description))
     ensure_success(resp)
     PagerdutyIncident.new service_key, resp["incident_key"]
   end
 
+  # @return [PagerdutyIncident] The incident referenced by the key.
+  #
   def get_incident(incident_key)
     PagerdutyIncident.new service_key, incident_key
   end
@@ -105,6 +109,8 @@ class PagerdutyIncident < Pagerduty
   # @param [Hash] details An arbitrary hash containing any data you'd like
   #   included in the incident log.
   #
+  # @return [PagerdutyIncident] self
+  #
   def acknowledge(description = nil, details = nil)
     modify_incident("acknowledge", description, details)
   end
@@ -120,6 +126,8 @@ class PagerdutyIncident < Pagerduty
   #
   # @param [Hash] details An arbitrary hash containing any data you'd like
   #   included in the incident log.
+  #
+  # @return [PagerdutyIncident] self
   #
   def resolve(description = nil, details = nil)
     modify_incident("resolve", description, details)
