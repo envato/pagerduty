@@ -21,6 +21,11 @@ class Pagerduty
     @service_key = service_key
   end
 
+  # Send PagerDuty a trigger event to report a new or ongoing problem. When
+  # PagerDuty receives a trigger event, it will either open a new incident, or
+  # add a new trigger log entry to an existing incident, depending on the
+  # provided incident_key.
+  #
   # @param [String] description A short description of the problem that led to
   #   this trigger. This field (or a truncated version) will be used when
   #   generating phone calls, SMS messages and alert emails. It will also appear
@@ -89,6 +94,11 @@ class PagerdutyIncident < Pagerduty
     @incident_key = incident_key
   end
 
+  # Acknowledge the referenced incident. While an incident is acknowledged, it
+  # won't generate any additional notifications, even if it receives new
+  # trigger events. Send PagerDuty an acknowledge event when you know someone
+  # is presently working on the problem.
+  #
   # @param [String] description Text that will appear in the incident's log
   #   associated with this event.
   #
@@ -99,6 +109,12 @@ class PagerdutyIncident < Pagerduty
     modify_incident("acknowledge", description, details)
   end
 
+  # Resolve the referenced incident. Once an incident is resolved, it won't
+  # generate any additional notifications. New trigger events with the same
+  # incident_key as a resolved incident won't re-open the incident. Instead, a
+  # new incident will be created. Send PagerDuty a resolve event when the
+  # problem that caused the initial trigger event has been fixed.
+  #
   # @param [String] description Text that will appear in the incident's log
   #   associated with this event.
   #
