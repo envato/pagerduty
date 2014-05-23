@@ -1,7 +1,7 @@
 require 'pagerduty/version'
 require 'pagerduty/http_transport'
 
-class PagerdutyException < Exception
+class PagerdutyException < StandardError
   attr_reader :pagerduty_instance, :api_response
 
   def initialize(instance, resp)
