@@ -10,7 +10,9 @@ Integration API](http://developer.pagerduty.com/documentation/integration/events
 
 Add this line to your application's Gemfile:
 
-    gem 'pagerduty'
+```ruby
+gem 'pagerduty'
+```
 
 And then execute:
 
