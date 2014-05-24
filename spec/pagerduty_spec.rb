@@ -245,6 +245,37 @@ describe Pagerduty do
         end
       end
     end
+
+    describe "#trigger" do
+      describe "provides the correct request" do
+        Given { transport.stub(:send => standard_response) }
+
+        context "no options" do
+          Given(:incident_key) { "instance incident_key" }
+          When(:trigger) { incident.trigger("description") }
+          Then {
+            expect(transport).to have_received(:send).with(
+              incident_key: "instance incident_key",
+              service_key:  "a-test-service-key",
+              event_type:   "trigger",
+              description:  "description",
+            )
+          }
+        end
+
+        context "with incident_key option" do
+          When(:trigger) { incident.trigger("description", incident_key: "method param incident_key") }
+          Then {
+            expect(transport).to have_received(:send).with(
+              incident_key: "method param incident_key",
+              service_key:  "a-test-service-key",
+              event_type:   "trigger",
+              description:  "description",
+            )
+          }
+        end
+      end
+    end
   end
 
   def standard_response

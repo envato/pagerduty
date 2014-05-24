@@ -59,6 +59,12 @@ class PagerdutyIncident < Pagerduty
     @incident_key = incident_key
   end
 
+  # @param (see Pagerduty#trigger)
+  # @option (see Pagerduty#trigger)
+  def trigger(description, options = {})
+    super(description, { :incident_key => incident_key }.merge(options))
+  end
+
   def acknowledge(description = nil, details = nil)
     modify_incident("acknowledge", description, details)
   end
