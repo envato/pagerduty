@@ -101,6 +101,12 @@ class PagerdutyIncident < Pagerduty
     @incident_key = incident_key
   end
 
+  # @param (see Pagerduty#trigger)
+  # @option (see Pagerduty#trigger)
+  def trigger(description, options = {})
+    super(description, { :incident_key => incident_key }.merge(options))
+  end
+
   # Acknowledge the referenced incident. While an incident is acknowledged, it
   # won't generate any additional notifications, even if it receives new
   # trigger events. Send PagerDuty an acknowledge event when you know someone
