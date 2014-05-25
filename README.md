@@ -62,14 +62,14 @@ The API has changed in three ways that you need to be aware of:
 attribute can now be provided when calling the `#trigger` method (see above).
 
 2. `Pagerduty#trigger` arguments have changed to accept all available options
-rather than just details. To send details of the incident what used to be:
+rather than just details.
 
     ```ruby
+    # This no longer works post v2.0.0. If you're
+    # providing details in this form, please migrate.
     pagerduty.trigger("desc", :key => "value")
-    ```
-is now:
 
-    ```ruby
+    # Post v2.0.0 this is how to send details (migrate to this please).
     pagerduty.trigger("desc", :details => { :key => "value" })
     ```
 
