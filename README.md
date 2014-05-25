@@ -54,6 +54,28 @@ pagerduty.trigger(
 )
 ```
 
+### Upgrading to Version 2.0.0
+
+The API has changed in three ways that you need to be aware of:
+1. `Pagerduty` class initialiser no longer accepts an `incident_key`. This
+   attribute can now be provided when calling the `#trigger` method (see
+   above).
+2. `Pagerduty#trigger` arguments have changed to accept all available options
+   rather than just details. To send details of the incident what used to be:
+
+    ```ruby
+    pagerduty.trigger("desc", :key => "value")
+    ```
+is now:
+
+    ```ruby
+    pagerduty.trigger("desc", :details => { :key => "value" })
+    ```
+3. `PagerdutyException` now extends from `StandardError` rather than
+   `Exception`. This may affect how you rescue the error. i.e. `rescue
+   StandardError` will now rescue a `PagerdutyException` where it did not
+   before.
+
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/pagerduty/fork )
