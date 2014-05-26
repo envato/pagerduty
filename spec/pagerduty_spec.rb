@@ -285,10 +285,12 @@ describe Pagerduty do
   describe PagerdutyException do
     Given(:pagerduty_instance) { double }
     Given(:api_response) { double }
+    Given(:message) { "a test error message" }
 
-    When(:pagerduty_exception) { PagerdutyException.new(pagerduty_instance, api_response) }
+    When(:pagerduty_exception) { PagerdutyException.new(pagerduty_instance, api_response, message) }
 
     Then { pagerduty_exception.pagerduty_instance == pagerduty_instance }
     Then { pagerduty_exception.api_response == api_response }
+    Then { pagerduty_exception.message == message }
   end
 end
