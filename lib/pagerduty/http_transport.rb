@@ -3,6 +3,7 @@ require 'json'
 require 'net/http'
 require 'net/https'
 
+# @api private
 module Pagerduty::HttpTransport
   extend self
 

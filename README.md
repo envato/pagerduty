@@ -1,37 +1,87 @@
-pagerduty
-=========
+# pagerduty
 
 [![Gem Version](https://badge.fury.io/rb/pagerduty.svg)](http://badge.fury.io/rb/pagerduty)
 [![Build Status](https://travis-ci.org/envato/pagerduty.svg?branch=master)](https://travis-ci.org/envato/pagerduty)
 
-Provides a simple interface for calling into the [Pagerduty](http://pagerduty.com) API.
+Provides a lightweight Ruby interface for calling the [PagerDuty
+Integration API](http://developer.pagerduty.com/documentation/integration/events).
 
-Installation
-------------
+## Installation
 
-Install pagerduty with this command:
+Add this line to your application's Gemfile:
 
-    gem install pagerduty
+```ruby
+gem 'pagerduty'
+```
 
-Usage
------
+And then execute:
 
-Pagerduty exposes three classes, `Pagerduty`, `PagerdutyIncident` and `PagerdutyException`. Instances of `PagerdutyIncident` are created and returned for every API call.
+    $ bundle
 
-`Pagerduty`'s constructor takes 2 arguments - your `service_key` and an optional argument to set the 'incident_key' You can then use the method `trigger` to trigger a new incident with Pagerduty:
+Or install it yourself as:
 
-    require 'pagerduty'
-    p = Pagerduty.new "your_pagerduty_service_key"
-    incident = p.trigger "Everything went down!"
+    $ gem install pagerduty
 
-Incidents can be retriggered, acknowledged with the `PagerdutyIncident#acknowledge` method, and resolved with `PagerdutyIncident#resolve`.
+## Usage
 
-Additionally, all API methods (`trigger`, `acknowledge`, `resolve`) take an optional second parameter `details`, which should be a hash containing any extra information that should be recorded with Pagerduty.
+```ruby
+# Don't forget to require the library
+require "pagerduty"
 
-If the Pagerduty API does not return success, a `PagerdutyException` will be thrown which has the properties `pagerduty_instance` (the instance of either `Pagerduty` or `PagerdutyException` that caused the exception) and `api_response`, which is a hash representation of the JSON response from the Pagerduty API.
+# Instantiate a Pagerduty with your specific service key
+pagerduty = Pagerduty.new("<my-service-key>")
 
-Copyright
----------
+# Trigger an incident
+incident = pagerduty.trigger("incident description")
 
-Copyright (c) 2010 [Envato](http://envato.com) & [Charlie Somerville](http://charliesomerville.com). See LICENSE.txt for further details.
+# Acknowledge and/or resolve the incident
+incident.acknowledge
+incident.resolve
+```
 
+There are a whole bunch of properties you can send to PagerDuty when triggering
+an incident. See the [PagerDuty
+documentation](http://developer.pagerduty.com/documentation/integration/events/trigger)
+for the specifics.
+
+```ruby
+pagerduty.trigger(
+  "incident description",
+  :incident_key => "my unique incident identifier",
+  :client       => "server in trouble",
+  :client_url   => "http://server.in.trouble",
+  :details      => { :my => "extra details" },
+)
+```
+
+### Upgrading to Version 2.0.0
+
+The API has changed in three ways that you need to be aware of:
+
+1. `Pagerduty` class initialiser no longer accepts an `incident_key`. This
+attribute can now be provided when calling the `#trigger` method (see above).
+
+2. `Pagerduty#trigger` arguments have changed to accept all available options
+rather than just details.
+
+    ```ruby
+    # This no longer works post v2.0.0. If you're
+    # providing details in this form, please migrate.
+    pagerduty.trigger("desc", :key => "value")
+
+    # Post v2.0.0 this is how to send details (migrate to this please).
+    pagerduty.trigger("desc", :details => { :key => "value" })
+    ```
+
+3. `PagerdutyException` now extends from `StandardError` rather than
+`Exception`. This may affect how you rescue the error. i.e. `rescue
+StandardError` will now rescue a `PagerdutyException` where it did not
+before.
+
+## Contributing
+
+1. Fork it ( https://github.com/[my-github-username]/pagerduty/fork )
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create a new Pull Request

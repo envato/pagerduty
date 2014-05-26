@@ -6,12 +6,17 @@ require 'pagerduty/version'
 Gem::Specification.new do |gem|
   gem.name          = "pagerduty"
   gem.version       = Pagerduty::VERSION
-  gem.authors       = ["Charlie Somerville"]
-  gem.email         = ["charlie@charliesomerville.com"]
-  gem.description   = %q{Provides a simple interface for calling into the Pagerduty API}
-  gem.summary       = %q{Pagerduty API client library}
+  gem.authors       = ["Charlie Somerville", "Orien Madgwick"]
+  gem.email         = ["charlie@charliesomerville.com", "_@orien.io"]
+  gem.description   = %q{Provides a lightweight interface for calling the PagerDuty Integration API}
+  gem.summary       = %q{Pagerduty Integration API client library}
   gem.homepage      = "http://github.com/envato/pagerduty"
   gem.license       = "MIT"
+
+  gem.post_install_message = <<-MSG
+If upgrading to pagerduty 2.0.0 please note the API changes:
+https://github.com/envato/pagerduty#upgrading-to-version-200
+  MSG
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
