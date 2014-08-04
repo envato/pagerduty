@@ -55,6 +55,11 @@ describe Pagerduty::HttpTransport do
 
       context "PagerDuty responds with HTTP bad request" do
         Given { http.stub(:request => bad_request) }
+        Then { expect(response).to have_raised Pagerduty::BadRequestError }
+      end
+
+      context "PagerDuty responds with HTTP some other 4xx" do
+        Given { http.stub(:request => other_error_request) }
         Then { expect(response).to have_raised Net::HTTPServerException }
       end
     end
@@ -83,7 +88,14 @@ describe Pagerduty::HttpTransport do
   end
 
   def bad_request
-    Net::HTTPBadRequest.new 1.1, "400", "Bad Request"
+    response = Net::HTTPBadRequest.new 1.1, "400", "Bad Request"
+    response.stub(:body => "Some 400 body")
+    response
   end
 
+  def other_error_request
+    response = Net::HTTPBadRequest.new 1.1, "418", "Some other 4xx client error"
+    response.stub(:body => "Some other 4xx client error")
+    response
+  end
 end
