@@ -3,6 +3,9 @@ require 'json'
 require 'net/http'
 require 'net/https'
 
+class Pagerduty::BadRequestError < StandardError
+end
+
 # @api private
 module Pagerduty::HttpTransport
   extend self
@@ -13,8 +16,15 @@ module Pagerduty::HttpTransport
 
   def send(payload = {})
     response = post payload.to_json
-    response.error! unless transported?(response)
-    JSON.parse(response.body)
+    if not transported? response
+      if response.code == "400"
+        raise Pagerduty::BadRequestError, "400 response from Pagerduty: #{response.body}"
+      else
+        response.error!
+      end
+    else
+      JSON.parse(response.body)
+    end
   end
 
 private
