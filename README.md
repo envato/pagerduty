@@ -56,7 +56,7 @@ pagerduty.trigger(
 
 ### Debugging Error Responses
 
-Here's how to inspect HTTP error responses from PagerDuty:
+The gem doesn't encapsulate HTTP error responses from PagerDuty. Here's how to go about debugging these unhappy cases:
 
 ```ruby
 begin
