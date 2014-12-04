@@ -54,6 +54,20 @@ pagerduty.trigger(
 )
 ```
 
+### Debugging Error Responses
+
+Here's how to inspect HTTP error responses from PagerDuty:
+
+```ruby
+begin
+  pagerduty.trigger("incident description")
+rescue Net::HTTPServerException => error
+  error.response.code    #=> "400"
+  error.response.message #=> "Bad Request"
+  error.response.body    #=> "{\"status\":\"invalid event\",\"message\":\"Event object is invalid\",\"errors\":[\"Service key is the wrong length (should be 32 characters)\"]}"
+end
+```
+
 ### Upgrading to Version 2.0.0
 
 The API has changed in three ways that you need to be aware of:
