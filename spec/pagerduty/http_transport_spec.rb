@@ -5,10 +5,10 @@ describe Pagerduty::HttpTransport do
   Given(:http_transport) { Pagerduty::HttpTransport }
 
   Given(:http) { double.as_null_object }
-  Given { http.stub(:request => standard_response) }
-  Given { Net::HTTP.stub(:new => http) }
+  Given { allow(http).to receive(:request).and_return(standard_response) }
+  Given { allow(Net::HTTP).to receive(:new).and_return(http) }
   Given(:post) { double.as_null_object }
-  Given { Net::HTTP::Post.stub(:new => post) }
+  Given { allow(Net::HTTP::Post).to receive(:new).and_return(post) }
 
   describe "::send" do
     Given(:payload) { {
@@ -31,7 +31,7 @@ describe Pagerduty::HttpTransport do
     describe "handles all responses" do
 
       context "PagerDuty successfully creates the incident" do
-        Given { http.stub(:request => response_with_body(<<-JSON)) }
+        Given { allow(http).to receive(:request).and_return(response_with_body(<<-JSON)) }
           {
             "status": "success",
             "incident_key": "My Incident Key",
@@ -43,7 +43,7 @@ describe Pagerduty::HttpTransport do
       end
 
       context "PagerDuty fails to create the incident" do
-        Given { http.stub(:request => response_with_body(<<-JSON)) }
+        Given { allow(http).to receive(:request).and_return(response_with_body(<<-JSON)) }
           {
             "status": "failure",
             "message": "Event not processed"
@@ -54,7 +54,7 @@ describe Pagerduty::HttpTransport do
       end
 
       context "PagerDuty responds with HTTP bad request" do
-        Given { http.stub(:request => bad_request) }
+        Given { allow(http).to receive(:request).and_return(bad_request) }
         Then { expect(response).to have_raised Net::HTTPServerException }
       end
     end
@@ -78,7 +78,7 @@ describe Pagerduty::HttpTransport do
 
   def response_with_body(body)
     response = Net::HTTPSuccess.new 1.1, "200", "OK"
-    response.stub(:body => body)
+    allow(response).to receive(:body).and_return(body)
     response
   end
 
