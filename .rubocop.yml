@@ -1,0 +1,16 @@
+AllCops:
+  Exclude:
+    - .bundle/**
+    - pagerduty.gemspec
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 128
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/ModuleFunction:
+  Enabled: false

@@ -24,8 +24,9 @@ https://github.com/envato/pagerduty#upgrading-to-version-200
   gem.require_paths = ["lib"]
 
   gem.add_runtime_dependency "json", ">= 1.7.7"
-  gem.add_development_dependency "bundler", "~> 1.6"
+  gem.add_development_dependency "bundler", "~> 1.7"
   gem.add_development_dependency "rake"
-  gem.add_development_dependency "rspec", "~> 2.0"
+  gem.add_development_dependency "rspec"
   gem.add_development_dependency "rspec-given"
+  gem.add_development_dependency "rubocop"
 end
