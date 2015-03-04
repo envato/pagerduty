@@ -7,9 +7,9 @@ require 'net/https'
 module Pagerduty::HttpTransport
   extend self
 
-  HOST = "events.pagerduty.com"
+  HOST = 'events.pagerduty.com'
   PORT = 443
-  PATH = "/generic/2010-04-15/create_event.json"
+  PATH = '/generic/2010-04-15/create_event.json'
 
   def send(payload = {})
     response = post payload.to_json
@@ -17,7 +17,7 @@ module Pagerduty::HttpTransport
     JSON.parse(response.body)
   end
 
-private
+  private
 
   def post(payload)
     post = Net::HTTP::Post.new(PATH)
@@ -35,6 +35,6 @@ private
   end
 
   def transported?(response)
-    response.kind_of? Net::HTTPSuccess or response.kind_of? Net::HTTPRedirection
+    response.is_a?(Net::HTTPSuccess) || response.is_a?(Net::HTTPRedirection)
   end
 end
