@@ -51,7 +51,7 @@ class Pagerduty
   #
   # @return [PagerdutyIncident] The triggered incident.
   #
-  # @fail [PagerdutyException] If PagerDuty responds with a status that is not
+  # @raise [PagerdutyException] If PagerDuty responds with a status that is not
   #   "success"
   #
   def trigger(description, options = {})
@@ -77,7 +77,7 @@ class Pagerduty
   end
 
   def ensure_success(response)
-    fail PagerdutyException.new(self, response, response['message']) unless response['status'] == 'success'
+    raise PagerdutyException.new(self, response, response['message']) unless response['status'] == 'success'
   end
 
   # @api private
