@@ -11,12 +11,12 @@ describe Pagerduty do
   describe "#trigger" do
 
     describe "provides the correct request" do
-      Given { transport.stub(:send => standard_response) }
+      Given { transport.stub(:send_payload => standard_response) }
 
       context "no options" do
         When(:incident) { pagerduty.trigger("a-test-description") }
         Then {
-          expect(transport).to have_received(:send).with(
+          expect(transport).to have_received(:send_payload).with(
             service_key: "a-test-service-key",
             event_type:  "trigger",
             description: "a-test-description",
@@ -35,7 +35,7 @@ describe Pagerduty do
           )
         }
         Then {
-          expect(transport).to have_received(:send).with(
+          expect(transport).to have_received(:send_payload).with(
             service_key:  "a-test-service-key",
             event_type:   "trigger",
             description:  "a-test-description",
@@ -52,7 +52,7 @@ describe Pagerduty do
 
       context "PagerDuty successfully creates the incident" do
         Given {
-          transport.stub(:send => {
+          transport.stub(:send_payload => {
             "status" => "success",
             "incident_key" => "My Incident Key",
             "message" => "Event processed",
@@ -66,7 +66,7 @@ describe Pagerduty do
 
       context "PagerDuty fails to create the incident" do
         Given {
-          transport.stub(:send => {
+          transport.stub(:send_payload => {
             "status" => "failure",
             "message" => "Event not processed",
           })
@@ -76,7 +76,7 @@ describe Pagerduty do
       end
 
       context "PagerDuty responds with HTTP bad request" do
-        Given { transport.stub(:send).and_raise(Net::HTTPServerException.new(nil, nil)) }
+        Given { transport.stub(:send_payload).and_raise(Net::HTTPServerException.new(nil, nil)) }
         When(:incident) { pagerduty.trigger("description") }
         Then { expect(incident).to have_raised Net::HTTPServerException }
       end
@@ -98,12 +98,12 @@ describe Pagerduty do
     describe "#acknowledge" do
 
       describe "provides the correct request" do
-        Given { transport.stub(:send => standard_response) }
+        Given { transport.stub(:send_payload => standard_response) }
 
         context "no args" do
           When(:acknowledge) { incident.acknowledge }
           Then {
-            expect(transport).to have_received(:send).with(
+            expect(transport).to have_received(:send_payload).with(
               event_type: "acknowledge",
               service_key: "a-test-service-key",
               incident_key: "a-test-incident-key",
@@ -114,7 +114,7 @@ describe Pagerduty do
         context "a description" do
           When(:acknowledge) { incident.acknowledge("test-description") }
           Then {
-            expect(transport).to have_received(:send).with(
+            expect(transport).to have_received(:send_payload).with(
               event_type: "acknowledge",
               service_key: "a-test-service-key",
               incident_key: "a-test-incident-key",
@@ -126,7 +126,7 @@ describe Pagerduty do
         context "a description and details" do
           When(:acknowledge) { incident.acknowledge("test-description", { my: "detail" }) }
           Then {
-            expect(transport).to have_received(:send).with(
+            expect(transport).to have_received(:send_payload).with(
               event_type: "acknowledge",
               service_key: "a-test-service-key",
               incident_key: "a-test-incident-key",
@@ -141,7 +141,7 @@ describe Pagerduty do
 
         context "PagerDuty successfully acknowledges the incident" do
           Given {
-            transport.stub(:send => {
+            transport.stub(:send_payload => {
               "status" => "success",
               "incident_key" => "a-test-incident-key",
               "message" => "Event acknowledged",
@@ -153,7 +153,7 @@ describe Pagerduty do
 
         context "PagerDuty fails to acknowledge the incident" do
           Given {
-            transport.stub(:send => {
+            transport.stub(:send_payload => {
               "status" => "failure",
               "incident_key" => "a-test-incident-key",
               "message" => "Event not acknowledged",
@@ -164,7 +164,7 @@ describe Pagerduty do
         end
 
         context "PagerDuty responds with HTTP bad request" do
-          Given { transport.stub(:send).and_raise(Net::HTTPServerException.new(nil, nil)) }
+          Given { transport.stub(:send_payload).and_raise(Net::HTTPServerException.new(nil, nil)) }
           When(:acknowledge) { incident.acknowledge }
           Then { expect(acknowledge).to have_failed Net::HTTPServerException }
         end
@@ -174,12 +174,12 @@ describe Pagerduty do
     describe "#resolve" do
 
       describe "provides the correct request" do
-        Given { transport.stub(:send => standard_response) }
+        Given { transport.stub(:send_payload => standard_response) }
 
         context "no args" do
           When(:resolve) { incident.resolve }
           Then {
-            expect(transport).to have_received(:send).with(
+            expect(transport).to have_received(:send_payload).with(
               event_type: "resolve",
               service_key: "a-test-service-key",
               incident_key: "a-test-incident-key",
@@ -190,7 +190,7 @@ describe Pagerduty do
         context "a description" do
           When(:resolve) { incident.resolve("test-description") }
           Then {
-            expect(transport).to have_received(:send).with(
+            expect(transport).to have_received(:send_payload).with(
               event_type: "resolve",
               service_key: "a-test-service-key",
               incident_key: "a-test-incident-key",
@@ -202,7 +202,7 @@ describe Pagerduty do
         context "a description and details" do
           When(:resolve) { incident.resolve("test-description", { my: "detail" }) }
           Then {
-            expect(transport).to have_received(:send).with(
+            expect(transport).to have_received(:send_payload).with(
               event_type: "resolve",
               service_key: "a-test-service-key",
               incident_key: "a-test-incident-key",
@@ -217,7 +217,7 @@ describe Pagerduty do
 
         context "PagerDuty successfully resolves the incident" do
           Given {
-            transport.stub(:send => {
+            transport.stub(:send_payload => {
               "status" => "success",
               "incident_key" => "a-test-incident-key",
               "message" => "Event resolved",
@@ -229,7 +229,7 @@ describe Pagerduty do
 
         context "PagerDuty fails to create the incident" do
           Given {
-            transport.stub(:send => {
+            transport.stub(:send_payload => {
               "status" => "failure",
               "message" => "Event not resolved",
             })
@@ -239,7 +239,7 @@ describe Pagerduty do
         end
 
         context "PagerDuty responds with HTTP bad request" do
-          Given { transport.stub(:send).and_raise(Net::HTTPServerException.new(nil, nil)) }
+          Given { transport.stub(:send_payload).and_raise(Net::HTTPServerException.new(nil, nil)) }
           When(:resolve) { incident.resolve }
           Then { expect(resolve).to have_failed Net::HTTPServerException }
         end
@@ -248,13 +248,13 @@ describe Pagerduty do
 
     describe "#trigger" do
       describe "provides the correct request" do
-        Given { transport.stub(:send => standard_response) }
+        Given { transport.stub(:send_payload => standard_response) }
 
         context "no options" do
           Given(:incident_key) { "instance incident_key" }
           When(:trigger) { incident.trigger("description") }
           Then {
-            expect(transport).to have_received(:send).with(
+            expect(transport).to have_received(:send_payload).with(
               incident_key: "instance incident_key",
               service_key:  "a-test-service-key",
               event_type:   "trigger",
@@ -266,7 +266,7 @@ describe Pagerduty do
         context "with incident_key option" do
           When(:trigger) { incident.trigger("description", incident_key: "method param incident_key") }
           Then {
-            expect(transport).to have_received(:send).with(
+            expect(transport).to have_received(:send_payload).with(
               incident_key: "method param incident_key",
               service_key:  "a-test-service-key",
               event_type:   "trigger",

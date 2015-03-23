@@ -11,7 +11,7 @@ module Pagerduty::HttpTransport
   PORT = 443
   PATH = "/generic/2010-04-15/create_event.json"
 
-  def send(payload = {})
+  def send_payload(payload = {})
     response = post payload.to_json
     response.error! unless transported?(response)
     JSON.parse(response.body)

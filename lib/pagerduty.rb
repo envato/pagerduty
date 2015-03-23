@@ -74,7 +74,7 @@ protected
       :service_key => service_key,
       :event_type => event_type,
     )
-    Pagerduty.transport.send(args)
+    Pagerduty.transport.send_payload(args)
   end
 
   def ensure_success(response)

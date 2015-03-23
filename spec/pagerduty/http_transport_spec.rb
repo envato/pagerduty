@@ -10,7 +10,7 @@ describe Pagerduty::HttpTransport do
   Given(:post) { double.as_null_object }
   Given { Net::HTTP::Post.stub(:new => post) }
 
-  describe "::send" do
+  describe "::send_payload" do
     Given(:payload) { {
       event_type: "trigger",
       service_key: "test-srvc-key",
@@ -18,7 +18,7 @@ describe Pagerduty::HttpTransport do
       details: { key: "value" },
     } }
 
-    When(:response) { http_transport.send(payload) }
+    When(:response) { http_transport.send_payload(payload) }
 
     describe "provides the correct request" do
       Then {
