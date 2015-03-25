@@ -55,9 +55,9 @@ class Pagerduty
   #   "success"
   #
   def trigger(description, options = {})
-    resp = api_call('trigger', options.merge(description: description))
+    resp = api_call("trigger", options.merge(description: description))
     ensure_success(resp)
-    PagerdutyIncident.new service_key, resp['incident_key']
+    PagerdutyIncident.new service_key, resp["incident_key"]
   end
 
   # @return [PagerdutyIncident] The incident referenced by the key.
@@ -77,7 +77,7 @@ class Pagerduty
   end
 
   def ensure_success(response)
-    raise PagerdutyException.new(self, response, response['message']) unless response['status'] == 'success'
+    raise PagerdutyException.new(self, response, response["message"]) unless response["status"] == "success"
   end
 
   # @api private
@@ -122,7 +122,7 @@ class PagerdutyIncident < Pagerduty
   #   "success"
   #
   def acknowledge(description = nil, details = nil)
-    modify_incident('acknowledge', description, details)
+    modify_incident("acknowledge", description, details)
   end
 
   # Resolve the referenced incident. Once an incident is resolved, it won't
@@ -143,7 +143,7 @@ class PagerdutyIncident < Pagerduty
   #   "success"
   #
   def resolve(description = nil, details = nil)
-    modify_incident('resolve', description, details)
+    modify_incident("resolve", description, details)
   end
 
   private

@@ -1,5 +1,5 @@
 # encoding: utf-8
-require 'spec_helper'
+require "spec_helper"
 
 describe Pagerduty::HttpTransport do
   Given(:http_transport) { Pagerduty::HttpTransport }
@@ -10,7 +10,7 @@ describe Pagerduty::HttpTransport do
   Given(:post) { double.as_null_object }
   Given { allow(Net::HTTP::Post).to receive(:new).and_return(post) }
 
-  describe '::send_payload' do
+  describe "::send_payload" do
     Given(:payload) {
       {
         event_type: 'trigger',
@@ -22,7 +22,7 @@ describe Pagerduty::HttpTransport do
 
     When(:response) { http_transport.send_payload(payload) }
 
-    describe 'provides the correct request' do
+    describe "provides the correct request" do
       Then {
         expect(post).to have_received(:body=).with(
           '{"event_type":"trigger","service_key":"test-srvc-key","description":"test-desc","details":{"key":"value"}}'
@@ -30,8 +30,8 @@ describe Pagerduty::HttpTransport do
       }
     end
 
-    describe 'handles all responses' do
-      context 'PagerDuty successfully creates the incident' do
+    describe "handles all responses" do
+      context "PagerDuty successfully creates the incident" do
         Given { allow(http).to receive(:request).and_return(response_with_body(<<-JSON)) }
           {
             "status": "success",
@@ -40,35 +40,35 @@ describe Pagerduty::HttpTransport do
           }
         JSON
 
-        Then { expect(response).to include('status' => 'success') }
-        Then { expect(response).to include('incident_key' => 'My Incident Key') }
+        Then { expect(response).to include("status" => "success") }
+        Then { expect(response).to include("incident_key" => "My Incident Key") }
       end
 
-      context 'PagerDuty fails to create the incident' do
+      context "PagerDuty fails to create the incident" do
         Given { allow(http).to receive(:request).and_return(response_with_body(<<-JSON)) }
           {
             "status": "failure",
             "message": "Event not processed"
           }
         JSON
-        Then { expect(response).to include('status' => 'failure') }
-        Then { expect(response).to_not include('incident_key') }
+        Then { expect(response).to include("status" => "failure") }
+        Then { expect(response).to_not include("incident_key") }
       end
 
-      context 'PagerDuty responds with HTTP bad request' do
+      context "PagerDuty responds with HTTP bad request" do
         Given { allow(http).to receive(:request).and_return(bad_request) }
         Then { expect(response).to have_raised Net::HTTPServerException }
       end
     end
 
-    describe 'HTTPS use' do
+    describe "HTTPS use" do
       Then { expect(http).to have_received(:use_ssl=).with(true) }
       Then { expect(http).to have_received(:verify_mode=).with(OpenSSL::SSL::VERIFY_PEER) }
       Then { expect(http).to_not have_received(:ca_path=) }
       Then { expect(http).to_not have_received(:verify_depth=) }
     end
 
-    describe 'timeouts' do
+    describe "timeouts" do
       Then { expect(http).to have_received(:open_timeout=).with(60) }
       Then { expect(http).to have_received(:read_timeout=).with(60) }
     end
@@ -79,12 +79,12 @@ describe Pagerduty::HttpTransport do
   end
 
   def response_with_body(body)
-    response = Net::HTTPSuccess.new 1.1, '200', 'OK'
+    response = Net::HTTPSuccess.new 1.1, "200", "OK"
     allow(response).to receive(:body).and_return(body)
     response
   end
 
   def bad_request
-    Net::HTTPBadRequest.new 1.1, '400', 'Bad Request'
+    Net::HTTPBadRequest.new 1.1, "400", "Bad Request"
   end
 end
