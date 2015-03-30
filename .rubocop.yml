@@ -12,11 +12,13 @@ Style/Blocks:
     - spec/**/*
 
 Style/Documentation:
-  Description: 'Document classes and non-namespace modules.'
   Enabled: false
 
 Style/GuardClause:
   MinBodyLength: 2
+
+Style/SpecialGlobalVars:
+  Enabled: false
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes

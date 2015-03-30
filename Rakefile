@@ -8,5 +8,4 @@ RSpec::Core::RakeTask.new(:spec) do |t|
   t.verbose = false
 end
 
-desc "rubocop compliancy checks"
 RuboCop::RakeTask.new(:rubocop)
