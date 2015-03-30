@@ -22,10 +22,5 @@ Style/Documentation:
 Style/GuardClause:
   MinBodyLength: 2
 
-Style/ModuleFunction:
-  Description: 'Checks for usage of `extend self` in modules.'
-  StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#module-function'
-  Enabled: false
-
 Style/StringLiterals:
   EnforcedStyle: double_quotes
