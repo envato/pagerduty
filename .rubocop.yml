@@ -1,29 +1,31 @@
 AllCops:
   Exclude:
-    - .bundle/**
+    - .bundle/**/*
     - pagerduty.gemspec
 
-Style/Documentation:
-  Description: 'Document classes and non-namespace modules.'
-  Enabled: false
-
 Metrics/LineLength:
-  Description: 'Limit lines to 80 characters.'
-  StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#80-character-limits'
-  Max: 128
+  Exclude:
+    - spec/**/*
+
+Style/Blocks:
+  Exclude:
+    - spec/**/*
 
 Style/ClassAndModuleChildren:
   Description: 'Checks style of children classes and modules.'
   Enabled: false
 
+Style/Documentation:
+  Description: 'Document classes and non-namespace modules.'
+  Enabled: false
+
+Style/GuardClause:
+  MinBodyLength: 2
+
 Style/ModuleFunction:
   Description: 'Checks for usage of `extend self` in modules.'
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#module-function'
   Enabled: false
-
-Style/Blocks:
-  Exclude:
-    - spec/**/*
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes

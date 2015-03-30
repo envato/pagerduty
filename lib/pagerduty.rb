@@ -77,7 +77,9 @@ class Pagerduty
   end
 
   def ensure_success(response)
-    fail PagerdutyException.new(self, response, response["message"]) unless response["status"] == "success"
+    unless response["status"] == "success"
+      fail PagerdutyException.new(self, response, response["message"])
+    end
   end
 
   # @api private
