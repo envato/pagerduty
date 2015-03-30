@@ -28,4 +28,5 @@ https://github.com/envato/pagerduty#upgrading-to-version-200
   gem.add_development_dependency "rake"
   gem.add_development_dependency "rspec"
   gem.add_development_dependency "rspec-given"
+  gem.add_development_dependency "rubocop"
 end

@@ -11,12 +11,14 @@ describe Pagerduty::HttpTransport do
   Given { allow(Net::HTTP::Post).to receive(:new).and_return(post) }
 
   describe "::send_payload" do
-    Given(:payload) { {
-      event_type: "trigger",
-      service_key: "test-srvc-key",
-      description: "test-desc",
-      details: { key: "value" },
-    } }
+    Given(:payload) {
+      {
+        event_type: 'trigger',
+        service_key: 'test-srvc-key',
+        description: 'test-desc',
+        details: { key: 'value' }
+      }
+    }
 
     When(:response) { http_transport.send_payload(payload) }
 
@@ -29,7 +31,6 @@ describe Pagerduty::HttpTransport do
     end
 
     describe "handles all responses" do
-
       context "PagerDuty successfully creates the incident" do
         Given { allow(http).to receive(:request).and_return(response_with_body(<<-JSON)) }
           {
@@ -38,6 +39,7 @@ describe Pagerduty::HttpTransport do
             "message": "Event processed"
           }
         JSON
+
         Then { expect(response).to include("status" => "success") }
         Then { expect(response).to include("incident_key" => "My Incident Key") }
       end
@@ -85,5 +87,4 @@ describe Pagerduty::HttpTransport do
   def bad_request
     Net::HTTPBadRequest.new 1.1, "400", "Bad Request"
   end
-
 end

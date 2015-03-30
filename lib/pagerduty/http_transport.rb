@@ -17,7 +17,7 @@ module Pagerduty::HttpTransport
     JSON.parse(response.body)
   end
 
-private
+  private
 
   def post(payload)
     post = Net::HTTP::Post.new(PATH)
@@ -35,6 +35,6 @@ private
   end
 
   def transported?(response)
-    response.kind_of? Net::HTTPSuccess or response.kind_of? Net::HTTPRedirection
+    response.is_a?(Net::HTTPSuccess) || response.is_a?(Net::HTTPRedirection)
   end
 end
