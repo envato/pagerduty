@@ -1,7 +1,7 @@
 AllCops:
   Exclude:
     - .bundle/**/*
-    - pagerduty.gemspec
+    - bin/**/*
 
 Metrics/LineLength:
   Exclude:
