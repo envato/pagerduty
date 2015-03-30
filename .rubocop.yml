@@ -7,6 +7,9 @@ Metrics/LineLength:
   Exclude:
     - spec/**/*
 
+Style/AccessModifierIndentation:
+  EnforcedStyle: outdent
+
 Style/Blocks:
   Exclude:
     - spec/**/*
@@ -22,3 +25,6 @@ Style/SpecialGlobalVars:
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
+
+Style/TrailingComma:
+  EnforcedStyleForMultiline: no_comma

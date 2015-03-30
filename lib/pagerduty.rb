@@ -66,7 +66,7 @@ class Pagerduty
     PagerdutyIncident.new service_key, incident_key
   end
 
-  protected
+protected
 
   def api_call(event_type, args)
     args = args.merge(
@@ -148,7 +148,7 @@ class PagerdutyIncident < Pagerduty
     modify_incident("resolve", description, details)
   end
 
-  private
+private
 
   def modify_incident(event_type, description, details)
     options = { incident_key: incident_key }
