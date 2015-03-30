@@ -13,10 +13,10 @@ describe Pagerduty::HttpTransport do
   describe "::send_payload" do
     Given(:payload) {
       {
-        event_type: 'trigger',
-        service_key: 'test-srvc-key',
-        description: 'test-desc',
-        details: { key: 'value' }
+        event_type: "trigger",
+        service_key: "test-srvc-key",
+        description: "test-desc",
+        details: { key: "value" }
       }
     }
 

@@ -1,7 +1,7 @@
 # encoding: utf-8
-require 'json'
-require 'net/http'
-require 'net/https'
+require "json"
+require "net/http"
+require "net/https"
 
 # @api private
 module Pagerduty::HttpTransport

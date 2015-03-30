@@ -27,16 +27,8 @@ Style/SignalException:
   Enabled: false
 
 Style/Blocks:
-  Description: >-
-                Avoid using {...} for multi-line blocks (multiline chaining is
-                always ugly).
-                Prefer {...} over do...end for single-line blocks.
-  StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#single-line-blocks'
-  Enabled: true
   Exclude:
     - spec/**/*
 
 Style/StringLiterals:
-  Description: 'Checks if uses of quotes match the configured preference.'
-  StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#consistent-string-literals'
-  Enabled: false
+  EnforcedStyle: double_quotes

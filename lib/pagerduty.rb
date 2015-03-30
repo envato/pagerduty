@@ -1,5 +1,5 @@
-require 'pagerduty/version'
-require 'pagerduty/http_transport'
+require "pagerduty/version"
+require "pagerduty/http_transport"
 
 class PagerdutyException < StandardError
   attr_reader :pagerduty_instance, :api_response
