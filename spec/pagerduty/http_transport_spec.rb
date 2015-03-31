@@ -16,7 +16,7 @@ describe Pagerduty::HttpTransport do
         event_type: "trigger",
         service_key: "test-srvc-key",
         description: "test-desc",
-        details: { key: "value" }
+        details: { key: "value" },
       }
     }
 
@@ -25,7 +25,7 @@ describe Pagerduty::HttpTransport do
     describe "provides the correct request" do
       Then {
         expect(post).to have_received(:body=).with(
-          '{"event_type":"trigger","service_key":"test-srvc-key","description":"test-desc","details":{"key":"value"}}'
+          '{"event_type":"trigger","service_key":"test-srvc-key","description":"test-desc","details":{"key":"value"}}',
         )
       }
     end

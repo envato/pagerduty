@@ -71,7 +71,7 @@ protected
   def api_call(event_type, args)
     args = args.merge(
       service_key: service_key,
-      event_type: event_type
+      event_type: event_type,
     )
     Pagerduty.transport.send_payload(args)
   end

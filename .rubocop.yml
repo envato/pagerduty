@@ -27,4 +27,4 @@ Style/StringLiterals:
   EnforcedStyle: double_quotes
 
 Style/TrailingComma:
-  EnforcedStyleForMultiline: no_comma
+  EnforcedStyleForMultiline: comma
