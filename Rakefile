@@ -6,6 +6,7 @@ task default: [:rubocop, :spec]
 
 RSpec::Core::RakeTask.new(:spec) do |t|
   t.verbose = false
+  t.ruby_opts = "-w"
 end
 
 desc "rubocop compliancy checks"
