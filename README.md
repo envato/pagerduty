@@ -39,6 +39,11 @@ incident = pagerduty.trigger("incident description")
 # Acknowledge and/or resolve the incident
 incident.acknowledge
 incident.resolve
+
+# Acknowledge and/or resolve an existing incident
+incident = pagerduty.get_incident("<unique-incident-key>")
+incident.acknowledge
+incident.resolve
 ```
 
 There are a whole bunch of properties you can send to PagerDuty when triggering
@@ -49,16 +54,17 @@ for the specifics.
 ```ruby
 pagerduty.trigger(
   "incident description",
-  :incident_key => "my unique incident identifier",
-  :client       => "server in trouble",
-  :client_url   => "http://server.in.trouble",
-  :details      => { :my => "extra details" },
+  incident_key: "my unique incident identifier",
+  client:       "server in trouble",
+  client_url:   "http://server.in.trouble",
+  details:      { my: "extra details" }
 )
 ```
 
 ### Debugging Error Responses
 
-The gem doesn't encapsulate HTTP error responses from PagerDuty. Here's how to go about debugging these unhappy cases:
+The gem doesn't encapsulate HTTP error responses from PagerDuty. Here's how to
+go about debugging these unhappy cases:
 
 ```ruby
 begin
@@ -83,10 +89,10 @@ rather than just details.
     ```ruby
     # This no longer works post v2.0.0. If you're
     # providing details in this form, please migrate.
-    pagerduty.trigger("desc", :key => "value")
+    pagerduty.trigger("desc", key: "value")
 
     # Post v2.0.0 this is how to send details (migrate to this please).
-    pagerduty.trigger("desc", :details => { :key => "value" })
+    pagerduty.trigger("desc", details: { key: "value" })
     ```
 
 3. `PagerdutyException` now extends from `StandardError` rather than

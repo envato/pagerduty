@@ -10,7 +10,7 @@ Metrics/LineLength:
 Style/AccessModifierIndentation:
   EnforcedStyle: outdent
 
-Style/Blocks:
+Style/BlockDelimiters:
   Exclude:
     - spec/**/*
 
