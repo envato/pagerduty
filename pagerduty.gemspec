@@ -20,8 +20,8 @@ https://github.com/envato/pagerduty#upgrading-to-version-200
   MSG
 
   gem.files         = `git ls-files`.split($/)
-  gem.executables   = gem.files.grep(/^bin\//).map { |f| File.basename(f) }
-  gem.test_files    = gem.files.grep(/^(test|spec|features)\//)
+  gem.executables   = gem.files.grep(%r{^bin/}).map { |f| File.basename(f) }
+  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
   gem.add_runtime_dependency "json", ">= 1.7.7"
