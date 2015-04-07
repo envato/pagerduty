@@ -3,10 +3,6 @@ AllCops:
     - .bundle/**/*
     - bin/**/*
 
-Metrics/LineLength:
-  Exclude:
-    - spec/**/*
-
 Style/AccessModifierIndentation:
   EnforcedStyle: outdent
 
