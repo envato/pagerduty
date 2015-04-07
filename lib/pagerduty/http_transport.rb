@@ -1,40 +1,39 @@
 # encoding: utf-8
-require 'json'
-require 'net/http'
-require 'net/https'
+require "json"
+require "net/https"
 
-# @api private
-module Pagerduty::HttpTransport
-  extend self
+class Pagerduty
+  # @api private
+  module HttpTransport
+    HOST = "events.pagerduty.com"
+    PORT = 443
+    PATH = "/generic/2010-04-15/create_event.json"
 
-  HOST = "events.pagerduty.com"
-  PORT = 443
-  PATH = "/generic/2010-04-15/create_event.json"
+    def self.send_payload(payload = {})
+      response = post payload.to_json
+      response.error! unless transported?(response)
+      JSON.parse(response.body)
+    end
 
-  def send_payload(payload = {})
-    response = post payload.to_json
-    response.error! unless transported?(response)
-    JSON.parse(response.body)
-  end
+    def self.post(payload)
+      post = Net::HTTP::Post.new(PATH)
+      post.body = payload
+      http.request(post)
+    end
 
-  private
+    def self.http
+      http = Net::HTTP.new(HOST, PORT)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+      http.open_timeout = 60
+      http.read_timeout = 60
+      http
+    end
 
-  def post(payload)
-    post = Net::HTTP::Post.new(PATH)
-    post.body = payload
-    http.request(post)
-  end
+    def self.transported?(response)
+      response.is_a?(Net::HTTPSuccess) || response.is_a?(Net::HTTPRedirection)
+    end
 
-  def http
-    http = Net::HTTP.new(HOST, PORT)
-    http.use_ssl = true
-    http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-    http.open_timeout = 60
-    http.read_timeout = 60
-    http
-  end
-
-  def transported?(response)
-    response.is_a?(Net::HTTPSuccess) || response.is_a?(Net::HTTPRedirection)
+    private_class_method :post, :http, :transported?
   end
 end
