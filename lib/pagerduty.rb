@@ -1,5 +1,5 @@
-require 'pagerduty/version'
-require 'pagerduty/http_transport'
+require "pagerduty/version"
+require "pagerduty/http_transport"
 
 class PagerdutyException < StandardError
   attr_reader :pagerduty_instance, :api_response
@@ -66,18 +66,20 @@ class Pagerduty
     PagerdutyIncident.new service_key, incident_key
   end
 
-  protected
+protected
 
   def api_call(event_type, args)
     args = args.merge(
       service_key: service_key,
-      event_type: event_type
+      event_type: event_type,
     )
     Pagerduty.transport.send_payload(args)
   end
 
   def ensure_success(response)
-    raise PagerdutyException.new(self, response, response["message"]) unless response["status"] == "success"
+    unless response["status"] == "success"
+      fail PagerdutyException.new(self, response, response["message"])
+    end
   end
 
   # @api private
@@ -146,7 +148,7 @@ class PagerdutyIncident < Pagerduty
     modify_incident("resolve", description, details)
   end
 
-  private
+private
 
   def modify_incident(event_type, description, details)
     options = { incident_key: incident_key }

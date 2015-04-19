@@ -1,15 +1,16 @@
 # encoding: utf-8
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'pagerduty/version'
+require "pagerduty/version"
 
 Gem::Specification.new do |gem|
   gem.name          = "pagerduty"
   gem.version       = Pagerduty::VERSION
   gem.authors       = ["Charlie Somerville", "Orien Madgwick"]
   gem.email         = ["charlie@charliesomerville.com", "_@orien.io"]
-  gem.description   = %q{Provides a lightweight interface for calling the PagerDuty Integration API}
-  gem.summary       = %q{Pagerduty Integration API client library}
+  gem.description   =
+    "Provides a lightweight interface for calling the PagerDuty Integration API"
+  gem.summary       = "Pagerduty Integration API client library"
   gem.homepage      = "http://github.com/envato/pagerduty"
   gem.license       = "MIT"
 
@@ -19,7 +20,7 @@ https://github.com/envato/pagerduty#upgrading-to-version-200
   MSG
 
   gem.files         = `git ls-files`.split($/)
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  gem.executables   = gem.files.grep(%r{^bin/}).map { |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
