@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# encoding: utf-8
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "pagerduty/version"
@@ -25,9 +25,8 @@ https://github.com/envato/pagerduty#upgrading-to-version-200
   gem.require_paths = ["lib"]
 
   gem.add_runtime_dependency "json", ">= 1.7.7"
-  gem.add_development_dependency "bundler", "~> 1.7"
+  gem.add_development_dependency "bundler"
   gem.add_development_dependency "rake"
-  gem.add_development_dependency "rspec"
   gem.add_development_dependency "rspec-given"
   gem.add_development_dependency "rubocop"
 end
