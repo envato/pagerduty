@@ -25,32 +25,45 @@ describe Pagerduty::HttpTransport do
     describe "provides the correct request" do
       Then {
         expect(post).to have_received(:body=).with(
-          '{"event_type":"trigger","service_key":"test-srvc-key","description":"test-desc","details":{"key":"value"}}',
+          '{"event_type":"trigger",'\
+          '"service_key":"test-srvc-key",'\
+          '"description":"test-desc",'\
+          '"details":{"key":"value"}}',
         )
       }
     end
 
     describe "handles all responses" do
       context "PagerDuty successfully creates the incident" do
-        Given { allow(http).to receive(:request).and_return(response_with_body(<<-JSON)) }
-          {
-            "status": "success",
-            "incident_key": "My Incident Key",
-            "message": "Event processed"
-          }
-        JSON
+        Given {
+          allow(http)
+            .to receive(:request)
+            .and_return(response_with_body(<<-JSON))
+              {
+                "status": "success",
+                "incident_key": "My Incident Key",
+                "message": "Event processed"
+              }
+            JSON
+        }
 
         Then { expect(response).to include("status" => "success") }
-        Then { expect(response).to include("incident_key" => "My Incident Key") }
+        Then {
+          expect(response).to include("incident_key" => "My Incident Key")
+        }
       end
 
       context "PagerDuty fails to create the incident" do
-        Given { allow(http).to receive(:request).and_return(response_with_body(<<-JSON)) }
-          {
-            "status": "failure",
-            "message": "Event not processed"
-          }
-        JSON
+        Given {
+          allow(http)
+            .to receive(:request)
+            .and_return(response_with_body(<<-JSON))
+              {
+                "status": "failure",
+                "message": "Event not processed"
+              }
+            JSON
+        }
         Then { expect(response).to include("status" => "failure") }
         Then { expect(response).to_not include("incident_key") }
       end
@@ -63,9 +76,13 @@ describe Pagerduty::HttpTransport do
 
     describe "HTTPS use" do
       Then { expect(http).to have_received(:use_ssl=).with(true) }
-      Then { expect(http).to have_received(:verify_mode=).with(OpenSSL::SSL::VERIFY_PEER) }
       Then { expect(http).to_not have_received(:ca_path=) }
       Then { expect(http).to_not have_received(:verify_depth=) }
+      Then {
+        expect(http)
+          .to have_received(:verify_mode=)
+          .with(OpenSSL::SSL::VERIFY_PEER)
+      }
     end
 
     describe "timeouts" do
@@ -75,7 +92,9 @@ describe Pagerduty::HttpTransport do
   end
 
   def standard_response
-    response_with_body '{ "status": "success", "incident_key": "My Incident Key" }'
+    response_with_body(
+      '{ "status": "success", "incident_key": "My Incident Key" }',
+    )
   end
 
   def response_with_body(body)

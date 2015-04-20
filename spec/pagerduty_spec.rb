@@ -10,7 +10,11 @@ describe Pagerduty do
 
   describe "#trigger" do
     describe "provides the correct request" do
-      Given { allow(transport).to receive(:send_payload).and_return(standard_response) }
+      Given {
+        allow(transport)
+          .to receive(:send_payload)
+          .and_return(standard_response)
+      }
 
       context "no options" do
         When(:incident) { pagerduty.trigger("a-test-description") }
@@ -74,7 +78,11 @@ describe Pagerduty do
       end
 
       context "PagerDuty responds with HTTP bad request" do
-        Given { allow(transport).to receive(:send_payload).and_raise(Net::HTTPServerException.new(nil, nil)) }
+        Given {
+          allow(transport)
+            .to receive(:send_payload)
+            .and_raise(Net::HTTPServerException.new(nil, nil))
+        }
         When(:incident) { pagerduty.trigger("description") }
         Then { expect(incident).to have_raised Net::HTTPServerException }
       end
@@ -95,7 +103,11 @@ describe Pagerduty do
 
     describe "#acknowledge" do
       describe "provides the correct request" do
-        Given { allow(transport).to receive(:send_payload).and_return(standard_response) }
+        Given {
+          allow(transport)
+            .to receive(:send_payload)
+            .and_return(standard_response)
+        }
 
         context "no args" do
           When(:acknowledge) { incident.acknowledge }
@@ -121,7 +133,9 @@ describe Pagerduty do
         end
 
         context "a description and details" do
-          When(:acknowledge) { incident.acknowledge("test-description", my: "detail") }
+          When(:acknowledge) {
+            incident.acknowledge("test-description", my: "detail")
+          }
           Then {
             expect(transport).to have_received(:send_payload).with(
               event_type: "acknowledge",
@@ -160,7 +174,11 @@ describe Pagerduty do
         end
 
         context "PagerDuty responds with HTTP bad request" do
-          Given { allow(transport).to receive(:send_payload).and_raise(Net::HTTPServerException.new(nil, nil)) }
+          Given {
+            allow(transport)
+              .to receive(:send_payload)
+              .and_raise(Net::HTTPServerException.new(nil, nil))
+          }
           When(:acknowledge) { incident.acknowledge }
           Then { expect(acknowledge).to have_failed Net::HTTPServerException }
         end
@@ -169,7 +187,11 @@ describe Pagerduty do
 
     describe "#resolve" do
       describe "provides the correct request" do
-        Given { allow(transport).to receive(:send_payload).and_return(standard_response) }
+        Given {
+          allow(transport)
+            .to receive(:send_payload)
+            .and_return(standard_response)
+        }
 
         context "no args" do
           When(:resolve) { incident.resolve }
@@ -233,7 +255,11 @@ describe Pagerduty do
         end
 
         context "PagerDuty responds with HTTP bad request" do
-          Given { allow(transport).to receive(:send_payload).and_raise(Net::HTTPServerException.new(nil, nil)) }
+          Given {
+            allow(transport)
+              .to receive(:send_payload)
+              .and_raise(Net::HTTPServerException.new(nil, nil))
+          }
           When(:resolve) { incident.resolve }
           Then { expect(resolve).to have_failed Net::HTTPServerException }
         end
@@ -242,7 +268,11 @@ describe Pagerduty do
 
     describe "#trigger" do
       describe "provides the correct request" do
-        Given { allow(transport).to receive(:send_payload).and_return(standard_response) }
+        Given {
+          allow(transport)
+            .to receive(:send_payload)
+            .and_return(standard_response)
+        }
 
         context "no options" do
           Given(:incident_key) { "instance incident_key" }
@@ -258,7 +288,12 @@ describe Pagerduty do
         end
 
         context "with incident_key option" do
-          When(:trigger) { incident.trigger("description", incident_key: "method param incident_key") }
+          When(:trigger) {
+            incident.trigger(
+              "description",
+              incident_key: "method param incident_key",
+            )
+          }
           Then {
             expect(transport).to have_received(:send_payload).with(
               incident_key: "method param incident_key",
@@ -281,7 +316,9 @@ describe Pagerduty do
     Given(:api_response) { double }
     Given(:message) { "a test error message" }
 
-    When(:pagerduty_exception) { PagerdutyException.new(pagerduty_instance, api_response, message) }
+    When(:pagerduty_exception) {
+      PagerdutyException.new(pagerduty_instance, api_response, message)
+    }
 
     Then { pagerduty_exception.pagerduty_instance == pagerduty_instance }
     Then { pagerduty_exception.api_response == api_response }
