@@ -2,6 +2,7 @@ AllCops:
   Exclude:
     - .bundle/**/*
     - bin/**/*
+    - vendor/**/*
 
 Style/AccessModifierIndentation:
   EnforcedStyle: outdent
