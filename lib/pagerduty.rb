@@ -17,8 +17,20 @@ class Pagerduty
   # @param [String] service_key The GUID of one of your "Generic API" services.
   #   This is the "service key" listed on a Generic API's service detail page.
   #
-  def initialize(service_key)
+  # @option options [String] :proxy_host The DNS name or IP address of the
+  #   proxy host. If nil or unprovided a proxy will not be used.
+  #
+  # @option options [String] :proxy_port The port to use to access the proxy.
+  #
+  # @option options [String] :proxy_username username if authorization is
+  #   required to use the proxy.
+  #
+  # @option options [String] :proxy_password password if authorization is
+  #   required to use the proxy.
+  #
+  def initialize(service_key, options = {})
     @service_key = service_key
+    @transport = transport_from_options(options)
   end
 
   # Send PagerDuty a trigger event to report a new or ongoing problem. When
@@ -57,7 +69,11 @@ class Pagerduty
   def trigger(description, options = {})
     resp = api_call("trigger", options.merge(description: description))
     ensure_success(resp)
-    PagerdutyIncident.new service_key, resp["incident_key"]
+    PagerdutyIncident.new(
+      service_key,
+      resp["incident_key"],
+      transport: @transport,
+    )
   end
 
   # @param [String] incident_key The unique identifier for the incident.
@@ -68,7 +84,11 @@ class Pagerduty
   #
   def get_incident(incident_key)
     fail ArgumentError, "incident_key is nil" if incident_key.nil?
-    PagerdutyIncident.new service_key, incident_key
+    PagerdutyIncident.new(
+      service_key,
+      incident_key,
+      transport: @transport,
+    )
   end
 
 protected
@@ -78,7 +98,7 @@ protected
       service_key: service_key,
       event_type: event_type,
     )
-    Pagerduty.transport.send_payload(args)
+    @transport.send_payload(args)
   end
 
   def ensure_success(response)
@@ -87,9 +107,11 @@ protected
     end
   end
 
+private
+
   # @api private
-  def self.transport
-    Pagerduty::HttpTransport
+  def transport_from_options(options = {})
+    options[:transport] || Pagerduty::HttpTransport.new(options)
   end
 end
 
@@ -101,8 +123,8 @@ class PagerdutyIncident < Pagerduty
   #
   # @param [String] incident_key The unique identifier for the incident.
   #
-  def initialize(service_key, incident_key)
-    super service_key
+  def initialize(service_key, incident_key, options = {})
+    super service_key, options
     @incident_key = incident_key
   end
 

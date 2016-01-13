@@ -2,12 +2,14 @@
 require "spec_helper"
 
 describe Pagerduty::HttpTransport do
-  Given(:http_transport) { Pagerduty::HttpTransport }
+  Given(:http_transport) { Pagerduty::HttpTransport.new(options) }
 
-  Given(:http) { double.as_null_object }
+  Given(:options) { {} }
+  Given(:http) { spy }
+  Given(:http_proxy) { spy(new: http) }
   Given { allow(http).to receive(:request).and_return(standard_response) }
-  Given { allow(Net::HTTP).to receive(:new).and_return(http) }
-  Given(:post) { double.as_null_object }
+  Given { allow(Net::HTTP).to receive(:Proxy).and_return(http_proxy) }
+  Given(:post) { spy }
   Given { allow(Net::HTTP::Post).to receive(:new).and_return(post) }
 
   describe "::send_payload" do
@@ -82,6 +84,27 @@ describe Pagerduty::HttpTransport do
         expect(http)
           .to have_received(:verify_mode=)
           .with(OpenSSL::SSL::VERIFY_PEER)
+      }
+    end
+
+    describe "proxy use" do
+      Given(:options) {
+        {
+          proxy_host: "test-proxy-host",
+          proxy_port: "test-proxy-port",
+          proxy_username: "test-proxy-username",
+          proxy_password: "test-proxy-password",
+        }
+      }
+      Then {
+        expect(Net::HTTP)
+          .to have_received(:Proxy)
+          .with(
+            "test-proxy-host",
+            "test-proxy-port",
+            "test-proxy-username",
+            "test-proxy-password",
+          )
       }
     end
 

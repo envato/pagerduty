@@ -2,11 +2,11 @@
 require "spec_helper"
 
 describe Pagerduty do
-  Given(:pagerduty) { Pagerduty.new(service_key) }
-  Given(:service_key) { "a-test-service-key" }
+  Given(:pagerduty) { Pagerduty.new(service_key, options) }
 
-  Given(:transport) { double.as_null_object }
-  Given { allow(Pagerduty).to receive(:transport).and_return(transport) }
+  Given(:service_key) { "a-test-service-key" }
+  Given(:options) { { transport: transport } }
+  Given(:transport) { spy }
 
   describe "#trigger" do
     describe "provides the correct request" do
@@ -49,6 +49,31 @@ describe Pagerduty do
           )
         }
       end
+
+      context "with proxy" do
+        Given(:options) {
+          {
+            proxy_host: "test-proxy-host",
+            proxy_port: "test-proxy-port",
+            proxy_username: "test-proxy-username",
+            proxy_password: "test-proxy-password",
+          }
+        }
+        Given {
+          allow(Pagerduty::HttpTransport)
+            .to receive(:new)
+            .and_return(transport)
+        }
+        When(:incident) { pagerduty.trigger("a-test-description") }
+        Then {
+          expect(Pagerduty::HttpTransport).to have_received(:new).with(
+            proxy_host: "test-proxy-host",
+            proxy_port: "test-proxy-port",
+            proxy_username: "test-proxy-username",
+            proxy_password: "test-proxy-password",
+          )
+        }
+      end
     end
 
     describe "handles all responses" do
@@ -64,6 +89,7 @@ describe Pagerduty do
         Then { expect(incident).to be_a PagerdutyIncident }
         Then { incident.service_key == service_key }
         Then { incident.incident_key == "My Incident Key" }
+        Then { incident.instance_variable_get("@transport") == transport }
       end
 
       context "PagerDuty fails to create the incident" do
@@ -97,6 +123,7 @@ describe Pagerduty do
       Then { expect(incident).to be_a PagerdutyIncident }
       Then { incident.service_key == service_key }
       Then { incident.incident_key == incident_key }
+      Then { incident.instance_variable_get("@transport") == transport }
     end
 
     context "a nil incident_key" do
@@ -106,7 +133,9 @@ describe Pagerduty do
   end
 
   describe PagerdutyIncident do
-    Given(:incident) { PagerdutyIncident.new(service_key, incident_key) }
+    Given(:incident) {
+      PagerdutyIncident.new(service_key, incident_key, options)
+    }
     Given(:incident_key) { "a-test-incident-key" }
 
     describe "#acknowledge" do
