@@ -60,9 +60,14 @@ class Pagerduty
     PagerdutyIncident.new service_key, resp["incident_key"]
   end
 
+  # @param [String] incident_key The unique identifier for the incident.
+  #
   # @return [PagerdutyIncident] The incident referenced by the key.
   #
+  # @raise [ArgumentError] If incident_key is nil
+  #
   def get_incident(incident_key)
+    fail ArgumentError, "incident_key is nil" if incident_key.nil?
     PagerdutyIncident.new service_key, incident_key
   end
 
