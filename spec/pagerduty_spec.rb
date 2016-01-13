@@ -90,11 +90,19 @@ describe Pagerduty do
   end
 
   describe "#get_incident" do
-    Given(:incident_key) { "a-test-incident-key" }
     When(:incident) { pagerduty.get_incident(incident_key) }
-    Then { expect(incident).to be_a PagerdutyIncident }
-    Then { incident.service_key == service_key }
-    Then { incident.incident_key == incident_key }
+
+    context "a valid incident_key" do
+      Given(:incident_key) { "a-test-incident-key" }
+      Then { expect(incident).to be_a PagerdutyIncident }
+      Then { incident.service_key == service_key }
+      Then { incident.incident_key == incident_key }
+    end
+
+    context "a nil incident_key" do
+      Given(:incident_key) { nil }
+      Then { expect(incident).to have_failed ArgumentError }
+    end
   end
 
   describe PagerdutyIncident do
