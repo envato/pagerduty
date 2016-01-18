@@ -61,6 +61,25 @@ pagerduty.trigger(
 )
 ```
 
+### HTTP Proxy Support
+
+One can explicitly define an HTTP proxy like this:
+
+```ruby
+# Instantiate a Pagerduty with your specific service key and proxy details
+pagerduty = Pagerduty.new(
+  "<my-service-key>",
+  proxy_host: "my.http.proxy.local",
+  proxy_port: 3128,
+  proxy_username: "<my-proxy-username>",
+  proxy_password: "<my-proxy-password>",
+)
+
+# Then proceed to trigger your incident
+# (sends the request to PagerDuty via the HTTP proxy)
+incident = pagerduty.trigger("incident description")
+```
+
 ### Debugging Error Responses
 
 The gem doesn't encapsulate HTTP error responses from PagerDuty. Here's how to
