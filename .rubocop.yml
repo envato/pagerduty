@@ -4,8 +4,13 @@ AllCops:
     - bin/**/*
     - vendor/**/*
 
-Style/AccessModifierIndentation:
+Layout/AccessModifierIndentation:
   EnforcedStyle: outdent
+
+Metrics/BlockLength:
+  Enabled: true
+  Exclude:
+    - spec/**/*
 
 Style/BlockDelimiters:
   Exclude:
