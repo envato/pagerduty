@@ -4,7 +4,8 @@ module Warnings
   end
 
   def self.with_flag(flag)
-    old_verbose, $VERBOSE = $VERBOSE, flag
+    old_verbose = $VERBOSE
+    $VERBOSE = flag
     yield
   ensure
     $VERBOSE = old_verbose

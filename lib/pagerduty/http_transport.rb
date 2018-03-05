@@ -1,13 +1,13 @@
-# encoding: utf-8
+
 require "json"
 require "net/https"
 
 class Pagerduty
   # @api private
   class HttpTransport
-    HOST = "events.pagerduty.com"
+    HOST = "events.pagerduty.com".freeze
     PORT = 443
-    PATH = "/generic/2010-04-15/create_event.json"
+    PATH = "/generic/2010-04-15/create_event.json".freeze
 
     def initialize(options = {})
       @options = options

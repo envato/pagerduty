@@ -1,5 +1,5 @@
-# encoding: utf-8
-Dir[File.expand_path("../support/**/*.rb", __FILE__)].each { |f| require f }
+
+Dir[File.expand_path("support/**/*.rb", __dir__)].each { |f| require f }
 
 Warnings.silenced do
   require "rspec/given"
