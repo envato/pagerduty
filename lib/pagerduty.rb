@@ -83,7 +83,7 @@ class Pagerduty
   # @raise [ArgumentError] If incident_key is nil
   #
   def get_incident(incident_key)
-    fail ArgumentError, "incident_key is nil" if incident_key.nil?
+    raise ArgumentError, "incident_key is nil" if incident_key.nil?
     PagerdutyIncident.new(
       service_key,
       incident_key,
@@ -103,7 +103,7 @@ protected
 
   def ensure_success(response)
     unless response["status"] == "success"
-      fail PagerdutyException.new(self, response, response["message"])
+      raise PagerdutyException.new(self, response, response["message"])
     end
   end
 

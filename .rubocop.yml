@@ -4,8 +4,13 @@ AllCops:
     - bin/**/*
     - vendor/**/*
 
-Style/AccessModifierIndentation:
+Layout/AccessModifierIndentation:
   EnforcedStyle: outdent
+
+Metrics/BlockLength:
+  Enabled: true
+  Exclude:
+    - spec/**/*
 
 Style/BlockDelimiters:
   Exclude:
@@ -23,5 +28,11 @@ Style/SpecialGlobalVars:
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 
-Style/TrailingComma:
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: comma
