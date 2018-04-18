@@ -22,6 +22,22 @@ The format is based on [Keep a Changelog], and this project adheres to
   This new method will return an instance that implements requested PagerDuty
   Events API version.
 
+- Support for the [Pagerduty Events API version 2][events-v2-docs] ([#66]).
+
+  ```ruby
+  pagerduty = Pagerduty.build(
+    integration_key: "<my-integration-key>",
+    api_version:     2
+  )
+  incident = pagerduty.trigger(
+    summary:  "summary",
+    source:   "source",
+    severity: "critical"
+  )
+  incident.acknowledge
+  incident.resolve
+  ```
+
 ### Deprecated
 
 - Using `new` on `Pagerduty` ([#64]). This works, but will be removed in the
@@ -74,7 +90,9 @@ The format is based on [Keep a Changelog], and this project adheres to
   ```
 
 [Unreleased]: https://github.com/envato/pagerduty/compare/v2.1.3...HEAD
+[events-v2-docs]: https://v2.developer.pagerduty.com/docs/send-an-event-events-api-v2
 [#64]: https://github.com/envato/pagerduty/pull/64
+[#66]: https://github.com/envato/pagerduty/pull/66
 
 ## [2.1.3] - 2020-02-10
 
