@@ -7,7 +7,7 @@ class Pagerduty
   class HttpTransport
     HOST = "events.pagerduty.com".freeze
     PORT = 443
-    PATH = "/generic/2010-04-15/create_event.json".freeze
+    PATH = "/v2/enqueue".freeze
 
     def initialize(options = {})
       @options = options

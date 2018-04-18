@@ -15,8 +15,8 @@ Gem::Specification.new do |gem|
   gem.license       = "MIT"
 
   gem.post_install_message = %(
-If upgrading to pagerduty 2.0.0 please note the API changes:
-https://github.com/envato/pagerduty#upgrading-to-version-200
+If upgrading to pagerduty 3.0.0 please note the API changes:
+https://github.com/envato/pagerduty#upgrading-to-version-300
   )
 
   gem.files         = `git ls-files`.split($/)

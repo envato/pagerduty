@@ -33,33 +33,31 @@ require "pagerduty"
 # Instantiate a Pagerduty with your specific service key
 pagerduty = Pagerduty.new("<my-service-key>")
 
+# Payload
+
+payload = {
+  summary: 'summary',
+  source: 'source',
+  severity: 'critical'
+}
+
 # Trigger an incident
-incident = pagerduty.trigger("incident description")
+incident = pagerduty.trigger(payload)
 
 # Acknowledge and/or resolve the incident
 incident.acknowledge
 incident.resolve
 
 # Acknowledge and/or resolve an existing incident
-incident = pagerduty.get_incident("<unique-incident-key>")
+incident = pagerduty.get_incident("<unique-dedup-key>")
 incident.acknowledge
 incident.resolve
 ```
 
 There are a whole bunch of properties you can send to PagerDuty when triggering
 an incident. See the [PagerDuty
-documentation](http://developer.pagerduty.com/documentation/integration/events/trigger)
+documentation](https://v2.developer.pagerduty.com/docs/trigger-events)
 for the specifics.
-
-```ruby
-pagerduty.trigger(
-  "incident description",
-  incident_key: "my unique incident identifier",
-  client:       "server in trouble",
-  client_url:   "http://server.in.trouble",
-  details:      { my: "extra details" }
-)
-```
 
 ### HTTP Proxy Support
 
@@ -75,9 +73,15 @@ pagerduty = Pagerduty.new(
   proxy_password: "<my-proxy-password>",
 )
 
+payload = {
+  summary: 'summary',
+  source: 'source',
+  severity: 'critical'
+}
+
 # Then proceed to trigger your incident
 # (sends the request to PagerDuty via the HTTP proxy)
-incident = pagerduty.trigger("incident description")
+incident = pagerduty.trigger(payload)
 ```
 
 ### Debugging Error Responses
@@ -86,8 +90,14 @@ The gem doesn't encapsulate HTTP error responses from PagerDuty. Here's how to
 go about debugging these unhappy cases:
 
 ```ruby
+payload = {
+  summary: 'summary',
+  source: 'source',
+  severity: 'critical'
+}
+
 begin
-  pagerduty.trigger("incident description")
+  pagerduty.trigger(payload)
 rescue Net::HTTPServerException => error
   error.response.code    #=> "400"
   error.response.message #=> "Bad Request"
@@ -119,6 +129,48 @@ rather than just details.
 StandardError` will now rescue a `PagerdutyException` where it did not
 before.
 
+### Upgrading to Version 3.0.0
+
+Notes: https://v2.developer.pagerduty.com/docs/trigger-events
+
+1. `Pagerduty` class renamed the instance variable `service_key` to `routing_key`
+
+2. `PagerdutyIncident` class renamed the instance variable `incident_key` to `dedup_key`
+
+3. Both `Pagerduty` and `PagerdutyIncident` no longer require an `incident_key` to `trigger` an event.
+
+4. `PagerdutyIncident` no longer accepts parameters, `description` and `details`, for methods `#acknowledge` and `#resolve`.
+
+5. Both `Pagerduty` and `PagerdutyIncident` only accept an `options` hash for their `#trigger` methods. Below is all acceptable payload options, specified by Pagerduty:
+    ```ruby
+       pager = Pagerduty.new("xxx")
+
+       payload = {
+         summary: 'summary',
+         source: 'source',
+         severity: %w[critical error warning info].sample,
+         timestamp: Time.now.strftime('%Y-%m-%dT%H:%M:%S.%L%z'),
+         component: 'component',
+         group: 'group',
+         class: 'class',
+         custom_details: {
+             random: 'random'
+         },
+         images: [{
+           src: "https://www.pagerduty.com/wp-content/uploads/2016/05/pagerduty-logo-green.png",
+           href: "https://example.com/",
+           alt: "Example text"
+         }],
+         links: [{
+           href: "https://example.com/",
+           text: "Link text"
+         }],
+         client: "Sample Monitoring Service",
+         client_url: "https://monitoring.example.com"
+       }
+
+       event = pager.trigger(payload)
+    ```
 ## Contributing
 
 1. Fork it ( https://github.com/envato/pagerduty/fork )
