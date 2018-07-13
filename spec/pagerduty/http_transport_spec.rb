@@ -1,4 +1,3 @@
-
 require "spec_helper"
 
 describe Pagerduty::HttpTransport do
