@@ -6,7 +6,7 @@
 [![Build Status](https://travis-ci.org/envato/pagerduty.svg?branch=master)](https://travis-ci.org/envato/pagerduty)
 
 Provides a lightweight Ruby interface for calling the [PagerDuty
-Integration API](http://developer.pagerduty.com/documentation/integration/events).
+Events API](https://v2.developer.pagerduty.com/docs/events-api).
 
 ## Installation
 
@@ -48,8 +48,8 @@ incident.resolve
 
 There are a whole bunch of properties you can send to PagerDuty when triggering
 an incident. See the [PagerDuty
-documentation](http://developer.pagerduty.com/documentation/integration/events/trigger)
-for the specifics.
+documentation](https://v2.developer.pagerduty.com/docs/trigger-events) for the
+specifics.
 
 ```ruby
 pagerduty.trigger(
