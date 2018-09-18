@@ -13,11 +13,6 @@ Gem::Specification.new do |gem|
   gem.homepage      = "http://github.com/envato/pagerduty"
   gem.license       = "MIT"
 
-  gem.post_install_message = %(
-If upgrading to pagerduty 2.0.0 please note the API changes:
-https://github.com/envato/pagerduty#upgrading-to-version-200
-  ).gsub(/\A\s+|\s+\z/, "")
-
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map { |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
