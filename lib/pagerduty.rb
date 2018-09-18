@@ -84,6 +84,7 @@ class Pagerduty
   #
   def get_incident(incident_key)
     raise ArgumentError, "incident_key is nil" if incident_key.nil?
+
     PagerdutyIncident.new(
       service_key,
       incident_key,
