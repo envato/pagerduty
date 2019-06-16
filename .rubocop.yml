@@ -1,14 +1,17 @@
 AllCops:
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  TargetRubyVersion: 2.3
   Exclude:
     - .bundle/**/*
     - bin/**/*
     - vendor/**/*
 
-Layout/AccessModifierIndentation:
-  EnforcedStyle: outdent
+Layout/AlignHash:
+  EnforcedHashRocketStyle: table
+  EnforcedColonStyle: table
 
 Metrics/BlockLength:
-  Enabled: true
   Exclude:
     - spec/**/*
 

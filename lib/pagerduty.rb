@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "pagerduty/version"
 require "pagerduty/http_transport"
 
@@ -92,12 +94,12 @@ class Pagerduty
     )
   end
 
-protected
+  protected
 
   def api_call(event_type, args)
     args = args.merge(
       service_key: service_key,
-      event_type: event_type,
+      event_type:  event_type,
     )
     @transport.send_payload(args)
   end
@@ -108,7 +110,7 @@ protected
     end
   end
 
-private
+  private
 
   # @api private
   def transport_from_options(options = {})
@@ -176,7 +178,7 @@ class PagerdutyIncident < Pagerduty
     modify_incident("resolve", description, details)
   end
 
-private
+  private
 
   def modify_incident(event_type, description, details)
     options = { incident_key: incident_key }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Warnings
   def self.silenced(&block)
     with_flag(nil, &block)
