@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 
 describe Pagerduty do
@@ -52,8 +54,8 @@ describe Pagerduty do
       context "with proxy" do
         Given(:options) {
           {
-            proxy_host: "test-proxy-host",
-            proxy_port: "test-proxy-port",
+            proxy_host:     "test-proxy-host",
+            proxy_port:     "test-proxy-port",
             proxy_username: "test-proxy-username",
             proxy_password: "test-proxy-password",
           }
@@ -66,8 +68,8 @@ describe Pagerduty do
         When(:incident) { pagerduty.trigger("a-test-description") }
         Then {
           expect(Pagerduty::HttpTransport).to have_received(:new).with(
-            proxy_host: "test-proxy-host",
-            proxy_port: "test-proxy-port",
+            proxy_host:     "test-proxy-host",
+            proxy_port:     "test-proxy-port",
             proxy_username: "test-proxy-username",
             proxy_password: "test-proxy-password",
           )
@@ -79,9 +81,9 @@ describe Pagerduty do
       context "PagerDuty successfully creates the incident" do
         Given {
           allow(transport).to receive(:send_payload).and_return(
-            "status" => "success",
+            "status"       => "success",
             "incident_key" => "My Incident Key",
-            "message" => "Event processed",
+            "message"      => "Event processed",
           )
         }
         When(:incident) { pagerduty.trigger("description") }
@@ -94,7 +96,7 @@ describe Pagerduty do
       context "PagerDuty fails to create the incident" do
         Given {
           allow(transport).to receive(:send_payload).and_return(
-            "status" => "failure",
+            "status"  => "failure",
             "message" => "Event not processed",
           )
         }
@@ -149,8 +151,8 @@ describe Pagerduty do
           When(:acknowledge) { incident.acknowledge }
           Then {
             expect(transport).to have_received(:send_payload).with(
-              event_type: "acknowledge",
-              service_key: "a-test-service-key",
+              event_type:   "acknowledge",
+              service_key:  "a-test-service-key",
               incident_key: "a-test-incident-key",
             )
           }
@@ -160,10 +162,10 @@ describe Pagerduty do
           When(:acknowledge) { incident.acknowledge("test-description") }
           Then {
             expect(transport).to have_received(:send_payload).with(
-              event_type: "acknowledge",
-              service_key: "a-test-service-key",
+              event_type:   "acknowledge",
+              service_key:  "a-test-service-key",
               incident_key: "a-test-incident-key",
-              description: "test-description",
+              description:  "test-description",
             )
           }
         end
@@ -174,11 +176,11 @@ describe Pagerduty do
           }
           Then {
             expect(transport).to have_received(:send_payload).with(
-              event_type: "acknowledge",
-              service_key: "a-test-service-key",
+              event_type:   "acknowledge",
+              service_key:  "a-test-service-key",
               incident_key: "a-test-incident-key",
-              description: "test-description",
-              details: { my: "detail" },
+              description:  "test-description",
+              details:      { my: "detail" },
             )
           }
         end
@@ -188,9 +190,9 @@ describe Pagerduty do
         context "PagerDuty successfully acknowledges the incident" do
           Given {
             allow(transport).to receive(:send_payload).and_return(
-              "status" => "success",
+              "status"       => "success",
               "incident_key" => "a-test-incident-key",
-              "message" => "Event acknowledged",
+              "message"      => "Event acknowledged",
             )
           }
           When(:acknowledge) { incident.acknowledge }
@@ -200,9 +202,9 @@ describe Pagerduty do
         context "PagerDuty fails to acknowledge the incident" do
           Given {
             allow(transport).to receive(:send_payload).and_return(
-              "status" => "failure",
+              "status"       => "failure",
               "incident_key" => "a-test-incident-key",
-              "message" => "Event not acknowledged",
+              "message"      => "Event not acknowledged",
             )
           }
           When(:acknowledge) { incident.acknowledge }
@@ -233,8 +235,8 @@ describe Pagerduty do
           When(:resolve) { incident.resolve }
           Then {
             expect(transport).to have_received(:send_payload).with(
-              event_type: "resolve",
-              service_key: "a-test-service-key",
+              event_type:   "resolve",
+              service_key:  "a-test-service-key",
               incident_key: "a-test-incident-key",
             )
           }
@@ -244,10 +246,10 @@ describe Pagerduty do
           When(:resolve) { incident.resolve("test-description") }
           Then {
             expect(transport).to have_received(:send_payload).with(
-              event_type: "resolve",
-              service_key: "a-test-service-key",
+              event_type:   "resolve",
+              service_key:  "a-test-service-key",
               incident_key: "a-test-incident-key",
-              description: "test-description",
+              description:  "test-description",
             )
           }
         end
@@ -256,11 +258,11 @@ describe Pagerduty do
           When(:resolve) { incident.resolve("test-description", my: "detail") }
           Then {
             expect(transport).to have_received(:send_payload).with(
-              event_type: "resolve",
-              service_key: "a-test-service-key",
+              event_type:   "resolve",
+              service_key:  "a-test-service-key",
               incident_key: "a-test-incident-key",
-              description: "test-description",
-              details: { my: "detail" },
+              description:  "test-description",
+              details:      { my: "detail" },
             )
           }
         end
@@ -270,9 +272,9 @@ describe Pagerduty do
         context "PagerDuty successfully resolves the incident" do
           Given {
             allow(transport).to receive(:send_payload).and_return(
-              "status" => "success",
+              "status"       => "success",
               "incident_key" => "a-test-incident-key",
-              "message" => "Event resolved",
+              "message"      => "Event resolved",
             )
           }
           When(:resolve) { incident.resolve }
@@ -282,7 +284,7 @@ describe Pagerduty do
         context "PagerDuty fails to create the incident" do
           Given {
             allow(transport).to receive(:send_payload).and_return(
-              "status" => "failure",
+              "status"  => "failure",
               "message" => "Event not resolved",
             )
           }
