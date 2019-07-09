@@ -8,7 +8,7 @@ class Pagerduty
   class HttpTransport
     HOST = "events.pagerduty.com"
     PORT = 443
-    PATH = "/generic/2010-04-15/create_event.json"
+    PATH = "/v2/enqueue"
 
     def initialize(options = {})
       @options = options

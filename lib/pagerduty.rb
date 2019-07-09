@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "pagerduty/version"
 require "pagerduty/http_transport"
 
 class PagerdutyException < StandardError
@@ -14,10 +13,10 @@ class PagerdutyException < StandardError
 end
 
 class Pagerduty
-  attr_reader :service_key
+  attr_reader :routing_key
 
-  # @param [String] service_key The GUID of one of your "Generic API" services.
-  #   This is the "service key" listed on a Generic API's service detail page.
+  # @param [String] routing_key The GUID of one of your "Generic API" services.
+  #   This is the Integration Key for an integration on any given service.
   #
   # @option options [String] :proxy_host The DNS name or IP address of the
   #   proxy host. If nil or unprovided a proxy will not be used.
@@ -30,23 +29,23 @@ class Pagerduty
   # @option options [String] :proxy_password password if authorization is
   #   required to use the proxy.
   #
-  def initialize(service_key, options = {})
-    @service_key = service_key
+  def initialize(routing_key, options = {})
+    @routing_key = routing_key
     @transport = transport_from_options(options)
   end
 
   # Send PagerDuty a trigger event to report a new or ongoing problem. When
   # PagerDuty receives a trigger event, it will either open a new incident, or
   # add a new trigger log entry to an existing incident, depending on the
-  # provided incident_key.
+  # provided dedup_key.
   #
-  # @param [String] description A short description of the problem that led to
+  # @param [String] summary A short summary of the problem that led to
   #   this trigger. This field (or a truncated version) will be used when
   #   generating phone calls, SMS messages and alert emails. It will also appear
   #   on the incidents tables in the PagerDuty UI. The maximum length is 1024
   #   characters.
   #
-  # @option options [String] :incident_key Identifies the incident to which
+  # @option options [String] :dedup_key Identifies the incident to which
   #   this trigger event should be applied. If there's no open (i.e. unresolved)
   #   incident with this key, a new one will be created. If there's already an
   #   open incident with a matching key, this event will be appended to that
@@ -68,38 +67,40 @@ class Pagerduty
   # @raise [PagerdutyException] If PagerDuty responds with a status that is not
   #   "success"
   #
-  def trigger(description, options = {})
-    resp = api_call("trigger", options.merge(description: description))
+  def trigger(summary, options = {})
+    payload = options["payload"]
+    payload = payload.merge(summary: summary)
+    resp = api_call("trigger", payload: payload)
     ensure_success(resp)
     PagerdutyIncident.new(
-      service_key,
-      resp["incident_key"],
+      routing_key,
+      resp["dedup_key"],
       transport: @transport,
     )
   end
 
-  # @param [String] incident_key The unique identifier for the incident.
+  # @param [String] dedup_key The unique identifier for the incident.
   #
   # @return [PagerdutyIncident] The incident referenced by the key.
   #
-  # @raise [ArgumentError] If incident_key is nil
+  # @raise [ArgumentError] If dedup_key is nil
   #
-  def get_incident(incident_key)
-    raise ArgumentError, "incident_key is nil" if incident_key.nil?
+  def get_incident(dedup_key)
+    raise ArgumentError, "dedup_key is nil" if dedup_key.nil?
 
     PagerdutyIncident.new(
-      service_key,
-      incident_key,
+      routing_key,
+      dedup_key,
       transport: @transport,
     )
   end
 
   protected
 
-  def api_call(event_type, args)
+  def api_call(event_action, args)
     args = args.merge(
-      service_key: service_key,
-      event_type:  event_type,
+      routing_key: routing_key,
+      event_action:  event_action,
     )
     @transport.send_payload(args)
   end
@@ -119,22 +120,22 @@ class Pagerduty
 end
 
 class PagerdutyIncident < Pagerduty
-  attr_reader :incident_key
+  attr_reader :dedup_key
 
-  # @param [String] service_key The GUID of one of your "Generic API" services.
-  #   This is the "service key" listed on a Generic API's service detail page.
+  # @param [String] routing_key The GUID of one of your "Generic API" services.
+  #   This is the "routing_key" listed on a Generic API's service detail page.
   #
-  # @param [String] incident_key The unique identifier for the incident.
+  # @param [String] dedup_key The unique identifier for the incident.
   #
-  def initialize(service_key, incident_key, options = {})
-    super service_key, options
-    @incident_key = incident_key
+  def initialize(routing_key, dedup_key, options = {})
+    super routing_key, options
+    @dedup_key = dedup_key
   end
 
   # @param (see Pagerduty#trigger)
   # @option (see Pagerduty#trigger)
-  def trigger(description, options = {})
-    super(description, { incident_key: incident_key }.merge(options))
+  def trigger(summary, options = {})
+    super(summary, { dedup_key: dedup_key }.merge(options))
   end
 
   # Acknowledge the referenced incident. While an incident is acknowledged, it
@@ -142,7 +143,7 @@ class PagerdutyIncident < Pagerduty
   # trigger events. Send PagerDuty an acknowledge event when you know someone
   # is presently working on the problem.
   #
-  # @param [String] description Text that will appear in the incident's log
+  # @param [String] summary Text that will appear in the incident's log
   #   associated with this event.
   #
   # @param [Hash] details An arbitrary hash containing any data you'd like
@@ -153,17 +154,17 @@ class PagerdutyIncident < Pagerduty
   # @raise [PagerdutyException] If PagerDuty responds with a status that is not
   #   "success"
   #
-  def acknowledge(description = nil, details = nil)
-    modify_incident("acknowledge", description, details)
+  def acknowledge(summary = nil, details = nil)
+    modify_incident("acknowledge", summary, details)
   end
 
   # Resolve the referenced incident. Once an incident is resolved, it won't
   # generate any additional notifications. New trigger events with the same
-  # incident_key as a resolved incident won't re-open the incident. Instead, a
+  # dedup_key as a resolved incident won't re-open the incident. Instead, a
   # new incident will be created. Send PagerDuty a resolve event when the
   # problem that caused the initial trigger event has been fixed.
   #
-  # @param [String] description Text that will appear in the incident's log
+  # @param [String] summary Text that will appear in the incident's log
   #   associated with this event.
   #
   # @param [Hash] details An arbitrary hash containing any data you'd like
@@ -174,17 +175,17 @@ class PagerdutyIncident < Pagerduty
   # @raise [PagerdutyException] If PagerDuty responds with a status that is not
   #   "success"
   #
-  def resolve(description = nil, details = nil)
-    modify_incident("resolve", description, details)
+  def resolve(summary = nil, details = nil)
+    modify_incident("resolve", summary, details)
   end
 
   private
 
-  def modify_incident(event_type, description, details)
-    options = { incident_key: incident_key }
-    options[:description] = description if description
+  def modify_incident(event_action, summary, details)
+    options = { dedup_key: dedup_key }
+    options[:summary] = summary if summary
     options[:details] = details if details
-    resp = api_call(event_type, options)
+    resp = api_call(event_action, options)
     ensure_success(resp)
     self
   end
