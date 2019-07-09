@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "pagerduty/version"
 require "pagerduty/http_transport"
 
 class PagerdutyException < StandardError
