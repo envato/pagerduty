@@ -15,6 +15,12 @@ Gem::Specification.new do |gem|
   gem.homepage      = "http://github.com/envato/pagerduty"
   gem.license       = "MIT"
 
+  gem.metadata      = {
+    "bug_tracker_uri"   => "https://github.com/envato/pagerduty/issues",
+    "documentation_uri" => "https://www.rubydoc.info/gems/pagerduty/#{gem.version}",
+    "source_code_uri"   => "https://github.com/envato/pagerduty/tree/v#{gem.version}",
+  }
+
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map { |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
