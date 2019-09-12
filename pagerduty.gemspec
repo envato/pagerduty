@@ -17,6 +17,7 @@ Gem::Specification.new do |gem|
 
   gem.metadata      = {
     "bug_tracker_uri"   => "https://github.com/envato/pagerduty/issues",
+    "changelog_uri"     => "https://github.com/envato/pagerduty/blob/v#{gem.version}/CHANGELOG.md",
     "documentation_uri" => "https://www.rubydoc.info/gems/pagerduty/#{gem.version}",
     "source_code_uri"   => "https://github.com/envato/pagerduty/tree/v#{gem.version}",
   }
