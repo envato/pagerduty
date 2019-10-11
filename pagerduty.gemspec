@@ -22,10 +22,10 @@ Gem::Specification.new do |gem|
     "source_code_uri"   => "https://github.com/envato/pagerduty/tree/v#{gem.version}",
   }
 
-  gem.files         = `git ls-files`.split($/)
-  gem.executables   = gem.files.grep(%r{^bin/}).map { |f| File.basename(f) }
-  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
+  gem.files         = `git ls-files -z`.split("\x0").select do |f|
+    f.match(%r{^(?:README|LICENSE|CHANGELOG|lib/)})
+  end
 
   gem.add_runtime_dependency "json", ">= 1.7.7"
   gem.add_development_dependency "bundler"

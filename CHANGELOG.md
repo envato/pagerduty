@@ -24,12 +24,17 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 - Realign with latest Rubocop style ([#54]).
 
+### Removed
+
+- Test files are no longer included in the gem file ([#60]).
+
 [Unreleased]: https://github.com/envato/pagerduty/compare/v2.1.2...HEAD
 [#54]: https://github.com/envato/pagerduty/pull/54
 [#55]: https://github.com/envato/pagerduty/pull/55
 [#57]: https://github.com/envato/pagerduty/pull/57
 [#58]: https://github.com/envato/pagerduty/pull/58
 [#59]: https://github.com/envato/pagerduty/pull/59
+[#60]: https://github.com/envato/pagerduty/pull/60
 
 ## [2.1.2] - 2018-09-18
 
