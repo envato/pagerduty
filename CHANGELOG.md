@@ -22,7 +22,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Fixed
 
-- Realign with latest Rubocop style ([#54]).
+- Realign with latest Rubocop style ([#54], [#62]).
 
 ### Removed
 
@@ -35,6 +35,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 [#58]: https://github.com/envato/pagerduty/pull/58
 [#59]: https://github.com/envato/pagerduty/pull/59
 [#60]: https://github.com/envato/pagerduty/pull/60
+[#62]: https://github.com/envato/pagerduty/pull/62
 
 ## [2.1.2] - 2018-09-18
 
