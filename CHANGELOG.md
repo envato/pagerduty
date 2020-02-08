@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Added
 
-- Test against Ruby 2.6 in CI ([#55]).
+- Test against Ruby 2.6 and 2.7 in CI ([#55], [#63]).
 
 - Add project metadata to the gemspec ([#57]).
 
@@ -36,6 +36,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 [#59]: https://github.com/envato/pagerduty/pull/59
 [#60]: https://github.com/envato/pagerduty/pull/60
 [#62]: https://github.com/envato/pagerduty/pull/62
+[#63]: https://github.com/envato/pagerduty/pull/63
 
 ## [2.1.2] - 2018-09-18
 
