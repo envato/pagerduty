@@ -2,10 +2,10 @@
 
 require "spec_helper"
 
-describe Pagerduty::HttpTransport do
+RSpec.describe Pagerduty::HttpTransport do
   Given(:http_transport) { Pagerduty::HttpTransport.new(options) }
 
-  Given(:options) { {} }
+  Given(:options) { { path: "/path/provided/" } }
   Given(:http) { spy }
   Given(:http_proxy) { spy(new: http) }
   Given { allow(http).to receive(:request).and_return(standard_response) }
@@ -91,10 +91,13 @@ describe Pagerduty::HttpTransport do
     describe "proxy use" do
       Given(:options) {
         {
-          proxy_host:     "test-proxy-host",
-          proxy_port:     "test-proxy-port",
-          proxy_username: "test-proxy-username",
-          proxy_password: "test-proxy-password",
+          path:  "/path/provided",
+          proxy: {
+            host:     "test-proxy-host",
+            port:     "test-proxy-port",
+            username: "test-proxy-username",
+            password: "test-proxy-password",
+          },
         }
       }
       Then {
@@ -122,12 +125,12 @@ describe Pagerduty::HttpTransport do
   end
 
   def response_with_body(body)
-    response = Net::HTTPSuccess.new 1.1, "200", "OK"
-    allow(response).to receive(:body).and_return(body)
-    response
+    Net::HTTPSuccess.new(1.1, "200", "OK").tap do |response|
+      allow(response).to receive(:body).and_return(body)
+    end
   end
 
   def bad_request
-    Net::HTTPBadRequest.new 1.1, "400", "Bad Request"
+    Net::HTTPBadRequest.new(1.1, "400", "Bad Request")
   end
 end
