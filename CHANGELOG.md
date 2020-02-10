@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+[Unreleased]: https://github.com/envato/pagerduty/compare/v2.1.3...HEAD
+
+## [2.1.3] - 2020-02-10
+
 ### Added
 
 - Test against Ruby 2.6 and 2.7 in CI ([#55], [#63]).
@@ -28,7 +32,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 - Test files are no longer included in the gem file ([#60]).
 
-[Unreleased]: https://github.com/envato/pagerduty/compare/v2.1.2...HEAD
+[2.1.3]: https://github.com/envato/pagerduty/compare/v2.1.2...v2.1.3
 [#54]: https://github.com/envato/pagerduty/pull/54
 [#55]: https://github.com/envato/pagerduty/pull/55
 [#57]: https://github.com/envato/pagerduty/pull/57
