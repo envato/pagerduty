@@ -3,6 +3,7 @@
 require "pagerduty/version"
 require "pagerduty/http_transport"
 require "pagerduty/events_api_v1"
+require "pagerduty/legacy"
 
 class PagerdutyException < StandardError
   attr_reader :pagerduty_instance, :api_response
