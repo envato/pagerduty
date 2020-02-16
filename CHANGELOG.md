@@ -10,7 +10,71 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+### Added
+
+- A new mechanisim for instantiating a pagerduty instance ([#64]).
+
+  ```ruby
+  pagerduty = Pagerduty.build(integration_key: "<my-integration-key>",
+                              api_version:     "1")
+  ```
+
+  This new method will return an instance that implements requested PagerDuty
+  Events API version.
+
+### Deprecated
+
+- Using `new` on `Pagerduty` ([#64]). This works, but will be removed in the
+  next major version.
+
+  ```ruby
+  pagerduty = Pagerduty.new("<my-integration-key>") # this is deprecated
+  ```
+
+  Instead, use the new `Pagerduty.build` method (see above).
+
+### Changed
+
+- `Pagerduty` is no longer a class. It's now a Ruby module ([#64]). This will
+  break implementations that use `Pagerduty` in their inheritance tree.
+
+- `PagerdutyIncident` no-longer inherits from `Pagerduty` and its initializer
+  parameters have changed ([#64]). Actually, it's now an alias of the
+  `Pagerduty::EventsApiV1:Incident` class.
+
+### Removed
+
+- Can no longer specify a new incident key when triggering from an `Incident`
+  object ([#64]).
+
+  This will now raise an `ArgumentError`. eg.
+
+  ```ruby
+  incident1 = pagerduty.trigger('first incident', incident_key: 'one') # this'll work fine
+  incident2 = incident1.trigger('second incident', incident_key: 'two') # this no-longer works.
+  ```
+
+  The difference is in the object we're calling the method on.
+
+  Instead always use the pagerduty object when triggering new incidents (with
+  new incident keys).
+
+  This works:
+
+  ```ruby
+  incident1 = pagerduty.trigger('first incident', incident_key: 'one')
+  incident2 = pagerduty.trigger('second incident', incident_key: 'two')
+  ```
+
+  And this is even better:
+
+  ```ruby
+  incident1 = pagerduty.get_incident('one').trigger('first incident')
+  incident2 = pagerduty.get_incident('two').trigger('second incident')
+  ```
+
 [Unreleased]: https://github.com/envato/pagerduty/compare/v2.1.3...HEAD
+[#64]: https://github.com/envato/pagerduty/pull/64
 
 ## [2.1.3] - 2020-02-10
 
