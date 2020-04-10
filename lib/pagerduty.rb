@@ -22,13 +22,13 @@ module Pagerduty
   # @example Build an instance for the Events API version 1
   #   pagerduty = Pagerduty.build(
   #     integration_key: "<integration-key>",
-  #     api_version:     "1",
+  #     api_version:     1,
   #   )
   #
   # @example Build an instance using an HTTP proxy for API requests
   #   pagerduty = Pagerduty.build(
   #     integration_key: "<integration-key>",
-  #     api_version:     "1",
+  #     api_version:     1,
   #     http_proxy:      {
   #       host:     "my.http.proxy.local",
   #       port:     3128,
@@ -44,7 +44,7 @@ module Pagerduty
   #   a service's Integrations tab. This option is required.
   #
   # @option config [String] api_version The version of the Pagerduty events API.
-  #  The gem currently supports version 1 (`"1"`). This option is required.
+  #  The gem currently supports version 1 (`1`). This option is required.
   #
   # @option config [String] http_proxy.host The DNS name or IP address of the
   #   proxy host. If nil or unprovided an HTTP proxy will not be used.

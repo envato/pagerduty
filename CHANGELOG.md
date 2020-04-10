@@ -16,7 +16,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
   ```ruby
   pagerduty = Pagerduty.build(integration_key: "<my-integration-key>",
-                              api_version:     "1")
+                              api_version:     1)
   ```
 
   This new method will return an instance that implements requested PagerDuty

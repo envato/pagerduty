@@ -6,12 +6,13 @@ RSpec.describe Pagerduty do
   When(:pagerduty) {
     Pagerduty.build(
       integration_key: service_key,
-      api_version:     "1",
+      api_version:     api_version,
       http_proxy:      http_proxy,
     )
   }
 
   Given(:service_key) { "a-test-service-key" }
+  Given(:api_version) { 1 }
   Given(:http_proxy) { {} }
   Given(:transport) {
     instance_spy(Pagerduty::HttpTransport, send_payload: standard_response)
@@ -26,7 +27,15 @@ RSpec.describe Pagerduty do
   }
 
   describe ".build" do
-    Then { expect(pagerduty).to be_a(Pagerduty::EventsApiV1) }
+    context "given version: `1`" do
+      Given(:api_version) { 1 }
+      Then { expect(pagerduty).to be_a(Pagerduty::EventsApiV1) }
+    end
+
+    context "given version: `'1'`" do
+      Given(:api_version) { "1" }
+      Then { expect(pagerduty).to be_a(Pagerduty::EventsApiV1) }
+    end
   end
 
   describe "#trigger" do

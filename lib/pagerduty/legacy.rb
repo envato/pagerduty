@@ -22,7 +22,7 @@ Pagerduty.class_eval do
   def self.new(service_key, options = {})
     build(
       integration_key: service_key,
-      api_version:     "1",
+      api_version:     1,
       http_proxy:      {
         host:     options[:proxy_host],
         port:     options[:proxy_port],

@@ -36,7 +36,7 @@ The following code snippet shows how to use the [Pagerduty Events API version
 # Instantiate a Pagerduty with a service integration key
 pagerduty = Pagerduty.build(
   integration_key: "<integration-key>",
-  api_version:     "1",
+  api_version:     1,
 )
 
 # Trigger an incident
@@ -110,7 +110,7 @@ One can explicitly define an HTTP proxy like this:
 ```ruby
 pagerduty = Pagerduty.build(
   integration_key: "<integration-key>",
-  api_version:     "1",
+  api_version:     1,
   http_proxy:      {
     host:     "my.http.proxy.local",
     port:     3128,
