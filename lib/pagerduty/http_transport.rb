@@ -12,7 +12,7 @@ module Pagerduty
 
     def initialize(config)
       @path = config.fetch(:path)
-      @proxy = config.fetch(:proxy, {})
+      @proxy = config[:proxy] || {}
     end
 
     def send_payload(payload)
