@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Added
 
-- A new mechanisim for instantiating a pagerduty instance ([#64]).
+- A new mechanism for instantiating a Pagerduty instance ([#64]).
 
   ```ruby
   pagerduty = Pagerduty.build(integration_key: "<my-integration-key>",
