@@ -65,11 +65,11 @@ module Pagerduty
   #
   def self.build(config)
     unless config.key?(:integration_key)
-      raise ArgumentError "integration_key not provided"
+      raise ArgumentError, "integration_key not provided"
     end
 
     version = config.fetch(:api_version) do
-      raise ArgumentError "api_version not provided"
+      raise ArgumentError, "api_version not provided"
     end
     events_api_class(version).new(config)
   end
@@ -79,7 +79,7 @@ module Pagerduty
     if const_defined?(class_name)
       const_get(class_name)
     else
-      raise ArgumentError "api_version #{version.inspect} not supported"
+      raise ArgumentError, "api_version #{version.inspect} not supported"
     end
   end
   private_class_method :events_api_class

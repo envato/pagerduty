@@ -110,6 +110,12 @@ RSpec.describe Pagerduty::HttpTransport do
             "test-proxy-password",
           )
       }
+      context "given nil proxy config" do
+        Given(:options) { { path: "/path/provided", proxy: nil } }
+        Then {
+          expect(Net::HTTP).to have_received(:Proxy).with(nil, nil, nil, nil)
+        }
+      end
     end
 
     describe "timeouts" do
