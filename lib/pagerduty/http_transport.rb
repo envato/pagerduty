@@ -3,19 +3,20 @@
 require "json"
 require "net/https"
 
-class Pagerduty
-  # @api private
+module Pagerduty
+  # @private
   class HttpTransport
     HOST = "events.pagerduty.com"
     PORT = 443
-    PATH = "/generic/2010-04-15/create_event.json"
+    private_constant :HOST, :PORT
 
-    def initialize(options = {})
-      @options = options
+    def initialize(config)
+      @path = config.fetch(:path)
+      @proxy = config.fetch(:proxy, {})
     end
 
-    def send_payload(payload = {})
-      response = post payload.to_json
+    def send_payload(payload)
+      response = post(payload.to_json)
       response.error! unless transported?(response)
       JSON.parse(response.body)
     end
@@ -23,7 +24,7 @@ class Pagerduty
     private
 
     def post(payload)
-      post = Net::HTTP::Post.new(PATH)
+      post = Net::HTTP::Post.new(@path)
       post.body = payload
       http.request(post)
     end
@@ -39,10 +40,10 @@ class Pagerduty
 
     def http_proxy
       Net::HTTP.Proxy(
-        @options[:proxy_host],
-        @options[:proxy_port],
-        @options[:proxy_username],
-        @options[:proxy_password],
+        @proxy[:host],
+        @proxy[:port],
+        @proxy[:username],
+        @proxy[:password],
       )
     end
 

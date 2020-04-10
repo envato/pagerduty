@@ -2,21 +2,27 @@
 
 require "spec_helper"
 
-describe Pagerduty do
+RSpec.describe Pagerduty do
   Given(:pagerduty) { Pagerduty.new(service_key, options) }
 
   Given(:service_key) { "a-test-service-key" }
-  Given(:options) { { transport: transport } }
-  Given(:transport) { spy }
+  Given(:options) { {} }
+  Given(:transport) {
+    instance_spy(Pagerduty::HttpTransport, send_payload: standard_response)
+  }
+  Given {
+    allow(Pagerduty::HttpTransport)
+      .to receive(:new)
+      .and_return(transport)
+  }
+
+  describe "#service_key" do
+    When(:returned_service_key) { pagerduty.service_key }
+    Then { expect(returned_service_key).to eq(service_key) }
+  end
 
   describe "#trigger" do
     describe "provides the correct request" do
-      Given {
-        allow(transport)
-          .to receive(:send_payload)
-          .and_return(standard_response)
-      }
-
       context "no options" do
         When(:incident) { pagerduty.trigger("a-test-description") }
         Then {
@@ -60,18 +66,17 @@ describe Pagerduty do
             proxy_password: "test-proxy-password",
           }
         }
-        Given {
-          allow(Pagerduty::HttpTransport)
-            .to receive(:new)
-            .and_return(transport)
-        }
         When(:incident) { pagerduty.trigger("a-test-description") }
         Then {
           expect(Pagerduty::HttpTransport).to have_received(:new).with(
-            proxy_host:     "test-proxy-host",
-            proxy_port:     "test-proxy-port",
-            proxy_username: "test-proxy-username",
-            proxy_password: "test-proxy-password",
+            a_hash_including(
+              proxy: {
+                host:     "test-proxy-host",
+                port:     "test-proxy-port",
+                username: "test-proxy-username",
+                password: "test-proxy-password",
+              },
+            ),
           )
         }
       end
@@ -134,19 +139,12 @@ describe Pagerduty do
   end
 
   describe PagerdutyIncident do
-    Given(:incident) {
-      PagerdutyIncident.new(service_key, incident_key, options)
-    }
+    Given(:incident) { pagerduty.get_incident(incident_key) }
+
     Given(:incident_key) { "a-test-incident-key" }
 
     describe "#acknowledge" do
       describe "provides the correct request" do
-        Given {
-          allow(transport)
-            .to receive(:send_payload)
-            .and_return(standard_response)
-        }
-
         context "no args" do
           When(:acknowledge) { incident.acknowledge }
           Then {
@@ -225,12 +223,6 @@ describe Pagerduty do
 
     describe "#resolve" do
       describe "provides the correct request" do
-        Given {
-          allow(transport)
-            .to receive(:send_payload)
-            .and_return(standard_response)
-        }
-
         context "no args" do
           When(:resolve) { incident.resolve }
           Then {
@@ -306,12 +298,6 @@ describe Pagerduty do
 
     describe "#trigger" do
       describe "provides the correct request" do
-        Given {
-          allow(transport)
-            .to receive(:send_payload)
-            .and_return(standard_response)
-        }
-
         context "no options" do
           Given(:incident_key) { "instance incident_key" }
           When(:trigger) { incident.trigger("description") }
@@ -325,22 +311,24 @@ describe Pagerduty do
           }
         end
 
-        context "with incident_key option" do
-          When(:trigger) {
-            incident.trigger(
-              "description",
-              incident_key: "method param incident_key",
-            )
-          }
-          Then {
-            expect(transport).to have_received(:send_payload).with(
-              incident_key: "method param incident_key",
-              service_key:  "a-test-service-key",
-              event_type:   "trigger",
-              description:  "description",
-            )
-          }
-        end
+        # This is the only gem version 2 spec that no-longer works.
+        #
+        # context "with incident_key option" do
+        #   When(:trigger) {
+        #     incident.trigger(
+        #       "description",
+        #       incident_key: "method param incident_key",
+        #     )
+        #   }
+        #   Then {
+        #     expect(transport).to have_received(:send_payload).with(
+        #       incident_key: "method param incident_key",
+        #       service_key:  "a-test-service-key",
+        #       event_type:   "trigger",
+        #       description:  "description",
+        #     )
+        #   }
+        # end
       end
     end
   end

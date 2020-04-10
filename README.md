@@ -27,58 +27,100 @@ Or install it yourself as:
 
 ## Usage
 
-```ruby
-# Don't forget to require the library
-require "pagerduty"
+### Events API V1
 
-# Instantiate a Pagerduty with your specific service key
-pagerduty = Pagerduty.new("<my-service-key>")
+The following code snippet shows how to use the [Pagerduty Events API version
+1](https://v2.developer.pagerduty.com/docs/events-api).
+
+```ruby
+# Instantiate a Pagerduty with a service integration key
+pagerduty = Pagerduty.build(
+  integration_key: "<integration-key>",
+  api_version:     1,
+)
 
 # Trigger an incident
-incident = pagerduty.trigger("incident description")
-
-# Acknowledge and/or resolve the incident
-incident.acknowledge
-incident.resolve
-
-# Acknowledge and/or resolve an existing incident
-incident = pagerduty.get_incident("<unique-incident-key>")
-incident.acknowledge
-incident.resolve
-```
-
-There are a whole bunch of properties you can send to PagerDuty when triggering
-an incident. See the [PagerDuty
-documentation](https://v2.developer.pagerduty.com/docs/trigger-events) for the
-specifics.
-
-```ruby
-pagerduty.trigger(
-  "incident description",
-  incident_key: "my unique incident identifier",
-  client:       "server in trouble",
-  client_url:   "http://server.in.trouble",
-  details:      { my: "extra details" }
+incident = pagerduty.trigger(
+  "FAILURE for production/HTTP on machine srv01.acme.com",
 )
+
+# Trigger an incident providing context and details
+incident = pagerduty.trigger(
+  "FAILURE for production/HTTP on machine srv01.acme.com",
+  client:     "Sample Monitoring Service",
+  client_url: "https://monitoring.service.com",
+  contexts:   [
+    {
+      type: "link",
+      href: "http://acme.pagerduty.com",
+      text: "View the incident on PagerDuty",
+    },
+    {
+      type: "image",
+      src:  "https://chart.googleapis.com/chart?chs=600x400&chd=t:6,2,9,5,2,5,7,4,8,2,1&cht=lc&chds=a&chxt=y&chm=D,0033FF,0,0,5,1",
+    }
+  ],
+  details:    {
+    ping_time: "1500ms",
+    load_avg:  0.75,
+  },
+)
+
+# Acknowledge the incident
+incident.acknowledge
+
+# Acknowledge, providing a description and extra details
+incident.acknowledge(
+  "Engineers are investigating the incident",
+  {
+    ping_time: "1700ms",
+    load_avg:  0.71,
+  }
+)
+
+# Resolve the incident
+incident.resolve
+
+# Resolve, providing a description and extra details
+incident.acknowledge(
+  "A fix has been deployed and the service has recovered",
+  {
+    ping_time: "120ms",
+    load_avg:  0.23,
+  }
+)
+
+# Provide a client defined incident key
+# (this can be used to update existing incidents)
+incident = pagerduty.get_incident("<incident-key>")
+incident.trigger("Description of the event")
+incident.acknowledge
+incident.resolve
 ```
+
+See the [PagerDuty Events API V1
+documentation](https://v2.developer.pagerduty.com/docs/trigger-events) for a
+detailed description of the parameters you can send when triggering an
+incident.
 
 ### HTTP Proxy Support
 
 One can explicitly define an HTTP proxy like this:
 
 ```ruby
-# Instantiate a Pagerduty with your specific service key and proxy details
-pagerduty = Pagerduty.new(
-  "<my-service-key>",
-  proxy_host: "my.http.proxy.local",
-  proxy_port: 3128,
-  proxy_username: "<my-proxy-username>",
-  proxy_password: "<my-proxy-password>",
-)
+pagerduty = Pagerduty.build(
+  integration_key: "<integration-key>",
+  api_version:     1,
+  http_proxy:      {
+    host:     "my.http.proxy.local",
+    port:     3128,
+    username: "<my-proxy-username>",
+    password: "<my-proxy-password>",
+  }
+ )
 
-# Then proceed to trigger your incident
-# (sends the request to PagerDuty via the HTTP proxy)
-incident = pagerduty.trigger("incident description")
+# Subsequent API calls will then be sent via the HTTP proxy
+pagerduty.trigger("incident description")
 ```
 
 ### Debugging Error Responses
@@ -94,6 +136,23 @@ rescue Net::HTTPServerException => error
   error.response.message #=> "Bad Request"
   error.response.body    #=> "{\"status\":\"invalid event\",\"message\":\"Event object is invalid\",\"errors\":[\"Service key is the wrong length (should be 32 characters)\"]}"
 end
+```
+
+### Legacy Interface
+
+The older Ruby interface from version 2 of the gem is still available.
+However, this is deprecated and will be removed in the next major release.
+
+```ruby
+# Instantiate a Pagerduty with your specific service key
+pagerduty = Pagerduty.new("<my-integration-key>")
+
+# Trigger an incident
+incident = pagerduty.trigger("incident description")
+
+# Acknowledge and resolve the incident
+incident.acknowledge
+incident.resolve
 ```
 
 ## Contributing
