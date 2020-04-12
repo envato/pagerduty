@@ -55,8 +55,12 @@ The format is based on [Keep a Changelog], and this project adheres to
 - Using `new` on `Pagerduty` ([#64]). This works, but will be removed in the
   next major version.
 
-  ```ruby
-  pagerduty = Pagerduty.new("<my-integration-key>") # this is deprecated
+  ```diff
+  - pagerduty = Pagerduty.new("<integration-key>")
+  + pagerduty = Pagerduty.build(integration_key: "<integration-key>", api_version: 1)
+  pagerduty.trigger("<incident description>")
+  incident.acknowledge
+  incident.resolve
   ```
 
   Instead, use the new `Pagerduty.build` method (see above).
