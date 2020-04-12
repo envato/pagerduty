@@ -1,13 +1,14 @@
 # pagerduty
 
-
 [![License MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/envato/pagerduty/blob/master/LICENSE.txt)
 [![Gem Version](https://img.shields.io/gem/v/pagerduty.svg?maxAge=2592000)](https://rubygems.org/gems/pagerduty)
 [![Gem Downloads](https://img.shields.io/gem/dt/pagerduty.svg?maxAge=2592000)](https://rubygems.org/gems/pagerduty)
 [![Build Status](https://travis-ci.org/envato/pagerduty.svg?branch=master)](https://travis-ci.org/envato/pagerduty)
 
-Provides a lightweight Ruby interface for calling the [PagerDuty
-Events API](https://v2.developer.pagerduty.com/docs/events-api).
+Provides a lightweight Ruby interface for calling the [PagerDuty Events
+API][events-v2-docs].
+
+[events-v2-docs]: https://v2.developer.pagerduty.com/docs/send-an-event-events-api-v2
 
 ## Installation
 
@@ -26,6 +27,73 @@ Or install it yourself as:
     $ gem install pagerduty
 
 ## Usage
+
+### Events API V2
+
+```ruby
+# Instantiate a Pagerduty service object providing an integration key and the
+# desired API version: 2
+pagerduty = Pagerduty.build(
+  integration_key: "<integration-key>",
+  api_version:     2
+)
+
+# Trigger an incident providing minimal details
+incident = pagerduty.trigger(
+  summary:  "summary",
+  source:   "source",
+  severity: "critical"
+)
+
+# Trigger an incident providing full context
+incident = pagerduty.trigger(
+  summary:        "Example alert on host1.example.com",
+  source:         "monitoringtool:cloudvendor:central-region-dc-01:852559987:cluster/api-stats-prod-003",
+  severity:       %w[critical error warning info].sample,
+  timestamp:      Time.now,
+  component:      "postgres",
+  group:          "prod-datapipe",
+  class:          "deploy",
+  custom_details: {
+                    ping_time: "1500ms",
+                    load_avg:  0.75
+                  },
+  images:         [
+                    {
+                      src:  "https://www.pagerduty.com/wp-content/uploads/2016/05/pagerduty-logo-green.png",
+                      href: "https://example.com/",
+                      alt:  "Example text",
+                    },
+                  ],
+  links:          [
+                    {
+                      href: "https://example.com/",
+                      text: "Link text",
+                    },
+                  ],
+  client:         "Sample Monitoring Service",
+  client_url:     "https://monitoring.example.com"
+)
+
+# Acknowledge and/or resolve the incident
+incident.acknowledge
+incident.resolve
+
+# Provide a client-defined incident key
+# (this can be used to update existing incidents)
+incident = pagerduty.incident("<incident-key>")
+incident.trigger(
+  summary:  "summary",
+  source:   "source",
+  severity: "critical"
+)
+incident.acknowledge
+incident.resolve
+```
+
+See the [PagerDuty Events API V2 documentation][events-v2-docs] for a
+detailed description on the parameters you can send when triggering an
+incident.
 
 ### Events API V1
 
@@ -110,17 +178,21 @@ One can explicitly define an HTTP proxy like this:
 ```ruby
 pagerduty = Pagerduty.build(
   integration_key: "<integration-key>",
-  api_version:     1,
+  api_version:     2, # The HTTP proxy settings work with either API version
   http_proxy:      {
     host:     "my.http.proxy.local",
     port:     3128,
     username: "<my-proxy-username>",
     password: "<my-proxy-password>",
   }
- )
+)
 
 # Subsequent API calls will then be sent via the HTTP proxy
-pagerduty.trigger("incident description")
+incident = pagerduty.trigger(
+  summary:  "summary",
+  source:   "source",
+  severity: "critical"
+)
 ```
 
 ### Debugging Error Responses
@@ -130,7 +202,11 @@ go about debugging these unhappy cases:
 
 ```ruby
 begin
-  pagerduty.trigger("incident description")
+  pagerduty.trigger(
+    summary:  "summary",
+    source:   "source",
+    severity: "critical"
+  )
 rescue Net::HTTPServerException => error
   error.response.code    #=> "400"
   error.response.message #=> "Bad Request"
