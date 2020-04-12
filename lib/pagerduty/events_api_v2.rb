@@ -161,10 +161,6 @@ module Pagerduty
         )
       end
 
-      PAYLOAD_ATTR = %i[summary timestamp source severity
-                        component group class custom_details].freeze
-      private_constant :PAYLOAD_ATTR
-
       # Send PagerDuty a trigger event to report a new or ongoing problem. When
       # PagerDuty receives a trigger event, it will either open a new incident,
       # or add a new trigger log entry to an existing incident, depending on
@@ -210,13 +206,13 @@ module Pagerduty
       # @param (see Pagerduty::EventsApiV2#trigger)
       # @option (see Pagerduty::EventsApiV2#trigger)
       def trigger(details)
-        raise ArgumentError, "dedup_key provided" if details.key?(:dedup_key)
+        if details.key?(:dedup_key) || details.key?(:incident_key)
+          raise ArgumentError, "incident_key or dedup_key provided, "\
+                               "please use the EventsApiv2::incident method "\
+                               "to specify an incident key"
+        end
 
-        payload = details.select { |key| PAYLOAD_ATTR.include?(key) }
-        payload[:timestamp] &&= payload[:timestamp].iso8601
-        details = details.merge(payload: payload)
-        details.reject! { |key| PAYLOAD_ATTR.include?(key) }
-        response = api_call("trigger", details)
+        response = api_call("trigger", trigger_request(details))
         @incident_key = response["dedup_key"]
         self
       end
@@ -253,6 +249,18 @@ module Pagerduty
       end
 
       private
+
+      PAYLOAD_ATTR = %i[summary timestamp source severity
+                        component group class custom_details].freeze
+      private_constant :PAYLOAD_ATTR
+
+      def trigger_request(details)
+        payload = details.select { |key| PAYLOAD_ATTR.include?(key) }
+        payload[:timestamp] &&= payload[:timestamp].iso8601
+        request = details.merge(payload: payload)
+        request.reject! { |key| PAYLOAD_ATTR.include?(key) }
+        request
+      end
 
       def api_call(event_action, payload = {})
         payload = payload.merge(

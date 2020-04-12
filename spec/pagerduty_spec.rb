@@ -39,5 +39,14 @@ RSpec.describe Pagerduty do
                                      "api_version 0 not supported")
       }
     end
+
+    context "given an incident key" do
+      Given(:config) {
+        { incident_key: "ik", integration_key: "test-key", api_version: 1 }
+      }
+      Then {
+        expect(build).to have_raised(ArgumentError, "incident_key provided")
+      }
+    end
   end
 end
