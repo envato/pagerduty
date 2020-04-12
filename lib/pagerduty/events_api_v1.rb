@@ -110,7 +110,7 @@ module Pagerduty
     #
     # @raise [ArgumentError] If incident_key is nil
     #
-    def get_incident(incident_key)
+    def incident(incident_key)
       raise ArgumentError, "incident_key is nil" if incident_key.nil?
 
       Incident.new(@config.merge(incident_key: incident_key))

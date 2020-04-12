@@ -136,8 +136,8 @@ RSpec.describe Pagerduty do
     end
   end
 
-  describe "#get_incident" do
-    When(:incident) { pagerduty.get_incident(incident_key) }
+  describe "#incident" do
+    When(:incident) { pagerduty.incident(incident_key) }
 
     context "a valid incident_key" do
       Given(:incident_key) { "a-test-incident-key" }
@@ -152,7 +152,7 @@ RSpec.describe Pagerduty do
   end
 
   describe Pagerduty::EventsApiV1::Incident do
-    Given(:incident) { pagerduty.get_incident(incident_key) }
+    Given(:incident) { pagerduty.incident(incident_key) }
 
     Given(:incident_key) { "a-test-incident-key" }
 

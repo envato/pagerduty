@@ -160,7 +160,7 @@ incident.acknowledge(
 
 # Provide a client defined incident key
 # (this can be used to update existing incidents)
-incident = pagerduty.get_incident("<incident-key>")
+incident = pagerduty.incident("<incident-key>")
 incident.trigger("Description of the event")
 incident.acknowledge
 incident.resolve
