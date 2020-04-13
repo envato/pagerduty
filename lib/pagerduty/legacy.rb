@@ -13,6 +13,8 @@ Pagerduty::EventsApiV1::Incident.class_eval do
 end
 
 Pagerduty::EventsApiV1.class_eval do
+  alias_method :get_incident, :incident
+
   def service_key
     @config[:integration_key]
   end

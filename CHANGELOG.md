@@ -38,6 +38,18 @@ The format is based on [Keep a Changelog], and this project adheres to
   incident.resolve
   ```
 
+- Added an `incident` method to the Pagerduty Events API V1 instance ([#67]).
+  This is intended as a drop-in replacement for the now-deprecated
+  `get_incident` method.
+
+  ```ruby
+  pagerduty = Pagerduty.build(
+    integration_key: "<integration-key>",
+    api_version:     1
+  )
+  incident = pagerduty.incident("<incident-key>")
+  ```
+
 ### Deprecated
 
 - Using `new` on `Pagerduty` ([#64]). This works, but will be removed in the
@@ -48,6 +60,19 @@ The format is based on [Keep a Changelog], and this project adheres to
   ```
 
   Instead, use the new `Pagerduty.build` method (see above).
+
+- The `get_incident` method is now deprecated ([#67]). It still works, but
+  will be removed in the next major release. Please migrate to the new
+  `incident` method, that works in exactly the same way.
+
+  ```diff
+  pagerduty = Pagerduty.new("<integration-key>")
+  - incident = pagerduty.get_incident("<incident-key>")
+  + incident = pagerduty.incident("<incident-key>")
+  incident.trigger("<incident description>")
+  incident.acknowledge
+  incident.resolve
+  ```
 
 ### Changed
 
@@ -85,14 +110,15 @@ The format is based on [Keep a Changelog], and this project adheres to
   And this is even better:
 
   ```ruby
-  incident1 = pagerduty.get_incident('one').trigger('first incident')
-  incident2 = pagerduty.get_incident('two').trigger('second incident')
+  incident1 = pagerduty.incident('one').trigger('first incident')
+  incident2 = pagerduty.incident('two').trigger('second incident')
   ```
 
 [Unreleased]: https://github.com/envato/pagerduty/compare/v2.1.3...HEAD
 [events-v2-docs]: https://v2.developer.pagerduty.com/docs/send-an-event-events-api-v2
 [#64]: https://github.com/envato/pagerduty/pull/64
 [#66]: https://github.com/envato/pagerduty/pull/66
+[#67]: https://github.com/envato/pagerduty/pull/67
 
 ## [2.1.3] - 2020-02-10
 
