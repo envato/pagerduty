@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+[Unreleased]: https://github.com/envato/pagerduty/compare/v3.0.0...HEAD
+
+## [3.0.0] - 2020-04-20
+
 ### Added
 
 - A new mechanism for instantiating a Pagerduty instance ([#64]).
@@ -55,8 +59,12 @@ The format is based on [Keep a Changelog], and this project adheres to
 - Using `new` on `Pagerduty` ([#64]). This works, but will be removed in the
   next major version.
 
-  ```ruby
-  pagerduty = Pagerduty.new("<my-integration-key>") # this is deprecated
+  ```diff
+  - pagerduty = Pagerduty.new("<integration-key>")
+  + pagerduty = Pagerduty.build(integration_key: "<integration-key>", api_version: 1)
+  pagerduty.trigger("<incident description>")
+  incident.acknowledge
+  incident.resolve
   ```
 
   Instead, use the new `Pagerduty.build` method (see above).
@@ -114,7 +122,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   incident2 = pagerduty.incident('two').trigger('second incident')
   ```
 
-[Unreleased]: https://github.com/envato/pagerduty/compare/v2.1.3...HEAD
+[3.0.0]: https://github.com/envato/pagerduty/compare/v2.1.3...v3.0.0
 [events-v2-docs]: https://v2.developer.pagerduty.com/docs/send-an-event-events-api-v2
 [#64]: https://github.com/envato/pagerduty/pull/64
 [#66]: https://github.com/envato/pagerduty/pull/66
