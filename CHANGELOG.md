@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+[Unreleased]: https://github.com/envato/pagerduty/compare/v3.0.0...HEAD
+
+## [3.0.0] - 2020-04-20
+
 ### Added
 
 - A new mechanism for instantiating a Pagerduty instance ([#64]).
@@ -118,7 +122,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   incident2 = pagerduty.incident('two').trigger('second incident')
   ```
 
-[Unreleased]: https://github.com/envato/pagerduty/compare/v2.1.3...HEAD
+[3.0.0]: https://github.com/envato/pagerduty/compare/v2.1.3...v3.0.0
 [events-v2-docs]: https://v2.developer.pagerduty.com/docs/send-an-event-events-api-v2
 [#64]: https://github.com/envato/pagerduty/pull/64
 [#66]: https://github.com/envato/pagerduty/pull/66
