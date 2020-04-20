@@ -130,6 +130,20 @@ RSpec.describe Pagerduty do
         }
       end
 
+      context "given a dedup_key option" do
+        When(:trigger) {
+          pagerduty.trigger(simple_incident_details.merge(dedup_key: "key"))
+        }
+        Then { expect(trigger).to have_failed ArgumentError }
+      end
+
+      context "given an incident_key option" do
+        When(:trigger) {
+          pagerduty.trigger(simple_incident_details.merge(incident_key: "key"))
+        }
+        Then { expect(trigger).to have_failed ArgumentError }
+      end
+
       context "configured with an HTTP proxy" do
         Given(:http_proxy) {
           {
@@ -344,7 +358,16 @@ RSpec.describe Pagerduty do
         end
 
         context "given a dedup_key option" do
-          When(:trigger) { incident.trigger(dedup_key: "key") }
+          When(:trigger) {
+            incident.trigger(simple_incident_details.merge(dedup_key: "key"))
+          }
+          Then { expect(trigger).to have_failed ArgumentError }
+        end
+
+        context "given an incident_key option" do
+          When(:trigger) {
+            incident.trigger(simple_incident_details.merge(incident_key: "key"))
+          }
           Then { expect(trigger).to have_failed ArgumentError }
         end
       end

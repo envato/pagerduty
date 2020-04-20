@@ -68,6 +68,7 @@ module Pagerduty
     unless config.key?(:integration_key)
       raise ArgumentError, "integration_key not provided"
     end
+    raise ArgumentError, "incident_key provided" if config.key?(:incident_key)
 
     version = config.fetch(:api_version) do
       raise ArgumentError, "api_version not provided"

@@ -100,14 +100,14 @@ The format is based on [Keep a Changelog], and this project adheres to
   Instead always use the pagerduty object when triggering new incidents (with
   new incident keys).
 
-  This works:
+  This works with the Events API V1:
 
   ```ruby
   incident1 = pagerduty.trigger('first incident', incident_key: 'one')
   incident2 = pagerduty.trigger('second incident', incident_key: 'two')
   ```
 
-  And this is even better:
+  And this is even better, as it works with both the Events API V1 and V2:
 
   ```ruby
   incident1 = pagerduty.incident('one').trigger('first incident')
