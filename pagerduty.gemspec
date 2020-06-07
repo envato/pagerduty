@@ -16,10 +16,11 @@ Gem::Specification.new do |gem|
   gem.license       = "MIT"
 
   gem.metadata      = {
-    "bug_tracker_uri"   => "https://github.com/envato/pagerduty/issues",
-    "changelog_uri"     => "https://github.com/envato/pagerduty/blob/v#{gem.version}/CHANGELOG.md",
+    "bug_tracker_uri"   => "#{gem.homepage}/issues",
+    "changelog_uri"     => "#{gem.homepage}/blob/v#{gem.version}/CHANGELOG.md",
     "documentation_uri" => "https://www.rubydoc.info/gems/pagerduty/#{gem.version}",
-    "source_code_uri"   => "https://github.com/envato/pagerduty/tree/v#{gem.version}",
+    "homepage_uri"      => gem.homepage,
+    "source_code_uri"   => "#{gem.homepage}/tree/v#{gem.version}",
   }
 
   gem.require_paths = ["lib"]
