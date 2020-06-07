@@ -28,6 +28,13 @@ Or install it yourself as:
 
 ## Usage
 
+First, obtain an Events API integration key from PagerDuty. Follow the
+[instructions][integration-key-documentation] in PagerDuty's documentation to
+procure one.
+
+[integration-key-documentation]: https://support.pagerduty.com/docs/services-and-integrations#create-a-generic-events-api-integration
+
+
 ### Events API V2
 
 ```ruby
