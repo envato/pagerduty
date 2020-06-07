@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
   gem.description   =
     "Provides a lightweight interface for calling the PagerDuty Integration API"
   gem.summary       = "Pagerduty Integration API client library"
-  gem.homepage      = "http://github.com/envato/pagerduty"
+  gem.homepage      = "https://github.com/envato/pagerduty"
   gem.license       = "MIT"
 
   gem.metadata      = {
