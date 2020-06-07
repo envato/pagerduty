@@ -8,7 +8,7 @@
 Provides a lightweight Ruby interface for calling the [PagerDuty Events
 API][events-v2-docs].
 
-[events-v2-docs]: https://v2.developer.pagerduty.com/docs/send-an-event-events-api-v2
+[events-v2-docs]: https://developer.pagerduty.com/docs/events-api-v2/overview/
 
 ## Installation
 
