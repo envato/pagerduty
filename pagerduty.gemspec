@@ -12,14 +12,15 @@ Gem::Specification.new do |gem|
   gem.description   =
     "Provides a lightweight interface for calling the PagerDuty Integration API"
   gem.summary       = "Pagerduty Integration API client library"
-  gem.homepage      = "http://github.com/envato/pagerduty"
+  gem.homepage      = "https://github.com/envato/pagerduty"
   gem.license       = "MIT"
 
   gem.metadata      = {
-    "bug_tracker_uri"   => "https://github.com/envato/pagerduty/issues",
-    "changelog_uri"     => "https://github.com/envato/pagerduty/blob/v#{gem.version}/CHANGELOG.md",
+    "bug_tracker_uri"   => "#{gem.homepage}/issues",
+    "changelog_uri"     => "#{gem.homepage}/blob/v#{gem.version}/CHANGELOG.md",
     "documentation_uri" => "https://www.rubydoc.info/gems/pagerduty/#{gem.version}",
-    "source_code_uri"   => "https://github.com/envato/pagerduty/tree/v#{gem.version}",
+    "homepage_uri"      => gem.homepage,
+    "source_code_uri"   => "#{gem.homepage}/tree/v#{gem.version}",
   }
 
   gem.require_paths = ["lib"]
