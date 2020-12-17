@@ -33,4 +33,4 @@ jobs:
           bundler-cache: true
 
       - name: Test
-        run: bundle exec rake --trace spec rubocop
+        run: bundle exec rake --trace
