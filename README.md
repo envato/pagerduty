@@ -3,7 +3,7 @@
 [![License MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/envato/pagerduty/blob/master/LICENSE.txt)
 [![Gem Version](https://img.shields.io/gem/v/pagerduty.svg?maxAge=2592000)](https://rubygems.org/gems/pagerduty)
 [![Gem Downloads](https://img.shields.io/gem/dt/pagerduty.svg?maxAge=2592000)](https://rubygems.org/gems/pagerduty)
-[![Build Status](https://travis-ci.org/envato/pagerduty.svg?branch=master)](https://travis-ci.org/envato/pagerduty)
+[![Build Status](https://github.com/envato/pagerduty/workflows/build/badge.svg?branch=master)](https://github.com/envato/pagerduty/actions)
 
 Provides a lightweight Ruby interface for calling the [PagerDuty Events
 API][events-v2-docs].
