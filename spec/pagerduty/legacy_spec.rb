@@ -113,10 +113,10 @@ RSpec.describe Pagerduty do
         Given {
           allow(transport)
             .to receive(:send_payload)
-            .and_raise(Net::HTTPServerException.new(nil, nil))
+            .and_raise(Net::HTTPClientException.new(nil, nil))
         }
         When(:incident) { pagerduty.trigger("description") }
-        Then { expect(incident).to have_raised Net::HTTPServerException }
+        Then { expect(incident).to have_raised Net::HTTPClientException }
       end
     end
   end
@@ -213,10 +213,10 @@ RSpec.describe Pagerduty do
           Given {
             allow(transport)
               .to receive(:send_payload)
-              .and_raise(Net::HTTPServerException.new(nil, nil))
+              .and_raise(Net::HTTPClientException.new(nil, nil))
           }
           When(:acknowledge) { incident.acknowledge }
-          Then { expect(acknowledge).to have_failed Net::HTTPServerException }
+          Then { expect(acknowledge).to have_failed Net::HTTPClientException }
         end
       end
     end
@@ -288,10 +288,10 @@ RSpec.describe Pagerduty do
           Given {
             allow(transport)
               .to receive(:send_payload)
-              .and_raise(Net::HTTPServerException.new(nil, nil))
+              .and_raise(Net::HTTPClientException.new(nil, nil))
           }
           When(:resolve) { incident.resolve }
-          Then { expect(resolve).to have_failed Net::HTTPServerException }
+          Then { expect(resolve).to have_failed Net::HTTPClientException }
         end
       end
     end

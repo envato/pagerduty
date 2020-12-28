@@ -214,7 +214,7 @@ begin
     source:   "source",
     severity: "critical"
   )
-rescue Net::HTTPServerException => error
+rescue Net::HTTPClientException => error
   error.response.code    #=> "400"
   error.response.message #=> "Bad Request"
   error.response.body    #=> "{\"status\":\"invalid event\",\"message\":\"Event object is invalid\",\"errors\":[\"Service key is the wrong length (should be 32 characters)\"]}"

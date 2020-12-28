@@ -73,7 +73,7 @@ RSpec.describe Pagerduty::HttpTransport do
 
       context "PagerDuty responds with HTTP bad request" do
         Given { allow(http).to receive(:request).and_return(bad_request) }
-        Then { expect(response).to have_raised Net::HTTPServerException }
+        Then { expect(response).to have_raised Net::HTTPClientException }
       end
     end
 
