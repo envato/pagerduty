@@ -18,9 +18,14 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 - Use GitHub Actions for CI build instead of TravisCI ([#73]).
 
+### Fixed
+
+- Resolved `Net::HTTPServerException` deprecation warning in test suite([#75]).
+
 [Unreleased]: https://github.com/envato/pagerduty/compare/v3.0.0...HEAD
 [#73]: https://github.com/envato/pagerduty/pull/73
 [#74]: https://github.com/envato/pagerduty/pull/74
+[#75]: https://github.com/envato/pagerduty/pull/75
 
 ## [3.0.0] - 2020-04-20
 
