@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Changed
 
 - Use GitHub Actions for CI build instead of TravisCI ([#73]).
+- The default git branch has been renamed to `main`.
 
 ### Fixed
 
