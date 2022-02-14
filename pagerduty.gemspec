@@ -10,8 +10,8 @@ Gem::Specification.new do |gem|
   gem.authors       = ["Charlie Somerville", "Orien Madgwick"]
   gem.email         = ["charlie@charliesomerville.com", "_@orien.io"]
   gem.description   =
-    "Provides a lightweight interface for calling the PagerDuty Integration API"
-  gem.summary       = "Pagerduty Integration API client library"
+    "Provides a lightweight interface for calling the PagerDuty Events API"
+  gem.summary       = "PagerDuty Events API client library"
   gem.homepage      = "https://github.com/envato/pagerduty"
   gem.license       = "MIT"
 
