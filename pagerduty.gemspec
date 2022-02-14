@@ -18,7 +18,7 @@ Gem::Specification.new do |gem|
   gem.metadata      = {
     "bug_tracker_uri"   => "#{gem.homepage}/issues",
     "changelog_uri"     => "#{gem.homepage}/blob/v#{gem.version}/CHANGELOG.md",
-    "documentation_uri" => "https://www.rubydoc.info/gems/pagerduty/#{gem.version}",
+    "documentation_uri" => "https://www.rubydoc.info/gems/#{gem.name}/#{gem.version}",
     "homepage_uri"      => gem.homepage,
     "source_code_uri"   => "#{gem.homepage}/tree/v#{gem.version}",
   }
