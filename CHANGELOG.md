@@ -10,6 +10,34 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+### Removed
+
+- Removed the deprecated way of creating a Pagerduty instance ([#79]).
+
+  ```diff
+  - pagerduty = Pagerduty.new("<integration-key>")
+  + pagerduty = Pagerduty.build(integration_key: "<integration-key>", api_version: 1)
+  pagerduty.trigger("<incident description>")
+  incident.acknowledge
+  incident.resolve
+  ```
+
+- Removed the deprecated `get_incident` and `service_key` methods from the
+  `Pagerduty::EventsApiV1::Incident` class ([#79]). `incident` provides a replacement
+  for the `get_incident` method. The `service_key` method has no replacement.
+
+  ```diff
+  pagerduty = Pagerduty.build(integration_key: "<integration-key>", api_version: 1)
+  - incident = pagerduty.get_incident("<incident-key>")
+  + incident = pagerduty.incident("<incident-key>")
+  incident.trigger("<incident description>")
+  incident.acknowledge
+  incident.resolve
+  ```
+
+- Removed the `PagerdutyIncident` class. Instead, use the
+  `Pagerduty::EventsApiV1::Incident` class ([#79]).
+
 ### Added
 
 - Test on Ruby 3.0 in CI build ([#74]).
@@ -27,6 +55,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 [#73]: https://github.com/envato/pagerduty/pull/73
 [#74]: https://github.com/envato/pagerduty/pull/74
 [#75]: https://github.com/envato/pagerduty/pull/75
+[#79]: https://github.com/envato/pagerduty/pull/79
 
 ## [3.0.0] - 2020-04-20
 

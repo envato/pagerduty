@@ -221,23 +221,6 @@ rescue Net::HTTPClientException => error
 end
 ```
 
-### Legacy Interface
-
-The older Ruby interface from version 2 of the gem is still available.
-However, this is deprecated and will be removed in the next major release.
-
-```ruby
-# Instantiate a Pagerduty with your specific service key
-pagerduty = Pagerduty.new("<my-integration-key>")
-
-# Trigger an incident
-incident = pagerduty.trigger("incident description")
-
-# Acknowledge and resolve the incident
-incident.acknowledge
-incident.resolve
-```
-
 ## Contributing
 
 1. Fork it ( https://github.com/envato/pagerduty/fork )
