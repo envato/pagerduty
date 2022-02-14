@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Removed
 
-- Removed the depreciated way of creating a Pagerduty instance ([#79]).
+- Removed the deprecated way of creating a Pagerduty instance ([#79]).
 
   ```diff
   - pagerduty = Pagerduty.new("<integration-key>")
