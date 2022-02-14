@@ -7,8 +7,8 @@ require "pagerduty/version"
 Gem::Specification.new do |gem|
   gem.name          = "pagerduty"
   gem.version       = Pagerduty::VERSION
-  gem.authors       = ["Charlie Somerville", "Orien Madgwick"]
-  gem.email         = ["charlie@charliesomerville.com", "_@orien.io"]
+  gem.authors       = ["Hailey Somerville", "Orien Madgwick"]
+  gem.email         = ["hailey@hailey.lol", "_@orien.io"]
   gem.description   =
     "Provides a lightweight interface for calling the PagerDuty Events API"
   gem.summary       = "PagerDuty Events API client library"
