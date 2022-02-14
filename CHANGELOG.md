@@ -10,7 +10,13 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+[Unreleased]: https://github.com/envato/pagerduty/compare/v4.0.0...HEAD
+
+## [4.0.0] - 2022-02-14
+
 ### Removed
+
+- Remove support for Ruby versions lower than 2.3 ([#78]).
 
 - Removed the deprecated way of creating a Pagerduty instance ([#79]).
 
@@ -44,17 +50,20 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Changed
 
+- The explicit `json` gem runtime dependency has been removed ([#78]).
 - Use GitHub Actions for CI build instead of TravisCI ([#73]).
-- The default git branch has been renamed to `main`.
+- The default git branch has been renamed to `main` ([#77]).
 
 ### Fixed
 
 - Resolved `Net::HTTPServerException` deprecation warning in test suite([#75]).
 
-[Unreleased]: https://github.com/envato/pagerduty/compare/v3.0.0...HEAD
+[4.0.0]: https://github.com/envato/pagerduty/compare/v3.0.0...v4.0.0
 [#73]: https://github.com/envato/pagerduty/pull/73
 [#74]: https://github.com/envato/pagerduty/pull/74
 [#75]: https://github.com/envato/pagerduty/pull/75
+[#78]: https://github.com/envato/pagerduty/pull/77
+[#78]: https://github.com/envato/pagerduty/pull/78
 [#79]: https://github.com/envato/pagerduty/pull/79
 [#80]: https://github.com/envato/pagerduty/pull/80
 
@@ -169,7 +178,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   ```
 
 [3.0.0]: https://github.com/envato/pagerduty/compare/v2.1.3...v3.0.0
-[events-v2-docs]: https://v2.developer.pagerduty.com/docs/send-an-event-events-api-v2
+[events-v2-docs]: https://developer.pagerduty.com/docs/ZG9jOjExMDI5NTgw-events-api-v2-overview
 [#64]: https://github.com/envato/pagerduty/pull/64
 [#66]: https://github.com/envato/pagerduty/pull/66
 [#67]: https://github.com/envato/pagerduty/pull/67
