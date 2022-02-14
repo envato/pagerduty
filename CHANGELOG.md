@@ -40,7 +40,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ### Added
 
-- Test on Ruby 3.0 in CI build ([#74]).
+- Test on Ruby 3.0 and 3.1 in CI build ([#74], [#80]).
 
 ### Changed
 
@@ -56,6 +56,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 [#74]: https://github.com/envato/pagerduty/pull/74
 [#75]: https://github.com/envato/pagerduty/pull/75
 [#79]: https://github.com/envato/pagerduty/pull/79
+[#80]: https://github.com/envato/pagerduty/pull/80
 
 ## [3.0.0] - 2020-04-20
 
