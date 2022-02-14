@@ -5,8 +5,8 @@ require "time"
 module Pagerduty
   # Trigger incidents via the PagerDuty Events API version 2.
   #
-  # @see https://v2.developer.pagerduty.com/docs/events-api-v2 PagerDuty Events
-  #   API V2 documentation
+  # @see https://developer.pagerduty.com/docs/ZG9jOjExMDI5NTgw-events-api-v2-overview
+  #   PagerDuty Events API V2 documentation
   #
   # @see Pagerduty.build
   #

@@ -169,7 +169,7 @@ The format is based on [Keep a Changelog], and this project adheres to
   ```
 
 [3.0.0]: https://github.com/envato/pagerduty/compare/v2.1.3...v3.0.0
-[events-v2-docs]: https://v2.developer.pagerduty.com/docs/send-an-event-events-api-v2
+[events-v2-docs]: https://developer.pagerduty.com/docs/ZG9jOjExMDI5NTgw-events-api-v2-overview
 [#64]: https://github.com/envato/pagerduty/pull/64
 [#66]: https://github.com/envato/pagerduty/pull/66
 [#67]: https://github.com/envato/pagerduty/pull/67
