@@ -27,7 +27,7 @@ Gem::Specification.new do |gem|
   gem.files         = `git ls-files -z`.split("\x0").select do |f|
     f.match(%r{^(?:README|LICENSE|CHANGELOG|lib/)})
   end
-  gem.required_ruby_version = ">= 2.3"
+  gem.required_ruby_version = ">= 2.6"
 
   gem.add_development_dependency "bundler"
   gem.add_development_dependency "rake"
