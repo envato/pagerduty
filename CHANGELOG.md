@@ -10,12 +10,17 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 ## [Unreleased]
 
+### Added
+
+- Test on Ruby 3.2 in the CI build ([#84]).
+
 ### Changed
 
 - Updated authorship details ([#82]).
 
 [Unreleased]: https://github.com/envato/pagerduty/compare/v4.0.0...HEAD
 [#82]: https://github.com/envato/pagerduty/pull/82
+[#84]: https://github.com/envato/pagerduty/pull/84
 
 ## [4.0.0] - 2022-02-14
 
