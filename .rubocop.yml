@@ -1,23 +1,21 @@
 AllCops:
   DisplayCopNames: true
   DisplayStyleGuide: true
+  NewCops: disable
+  SuggestExtensions: false
   TargetRubyVersion: 2.3
   Exclude:
     - .bundle/**/*
     - bin/**/*
     - vendor/**/*
 
-Layout/AlignHash:
+Layout/HashAlignment:
   EnforcedHashRocketStyle: table
   EnforcedColonStyle: table
 
 Metrics/BlockLength:
   Exclude:
     - spec/**/*
-
-Metrics/LineLength:
-  Exclude:
-    - pagerduty.gemspec
 
 Style/BlockDelimiters:
   Exclude:
