@@ -269,9 +269,7 @@ module Pagerduty
           event_action: event_action,
         )
         response = @transport.send_payload(payload)
-        unless response["status"] == "success"
-          raise PagerdutyException.new(self, response, response["message"])
-        end
+        raise PagerdutyException.new(self, response, response["message"]) unless response["status"] == "success"
 
         response
       end

@@ -64,9 +64,7 @@ module Pagerduty
   #   provided. Or if the provided api_version is unsupported.
   #
   def self.build(config)
-    unless config.key?(:integration_key)
-      raise ArgumentError, "integration_key not provided"
-    end
+    raise ArgumentError, "integration_key not provided" unless config.key?(:integration_key)
     raise ArgumentError, "incident_key provided" if config.key?(:incident_key)
 
     version = config.fetch(:api_version) do

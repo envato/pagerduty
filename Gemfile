@@ -6,7 +6,5 @@ source "https://rubygems.org"
 gemspec
 
 group :test do
-  if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("2.6")
-    gem "rspec-given", "< 3.8.1"
-  end
+  gem "rspec-given", "< 3.8.1" if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("2.6")
 end
