@@ -28,9 +28,4 @@ Gem::Specification.new do |gem|
     f.match(%r{^(?:README|LICENSE|CHANGELOG|lib/)})
   end
   gem.required_ruby_version = ">= 2.3"
-
-  gem.add_development_dependency "bundler"
-  gem.add_development_dependency "rake"
-  gem.add_development_dependency "rspec-given"
-  gem.add_development_dependency "rubocop", "~> 1"
 end
