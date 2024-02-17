@@ -17,11 +17,13 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### Changed
 
 - Updated authorship details ([#82]).
+- Bump the rubocop development dependency to version 1 ([#86]).
 
 [Unreleased]: https://github.com/envato/pagerduty/compare/v4.0.0...HEAD
 [#82]: https://github.com/envato/pagerduty/pull/82
 [#84]: https://github.com/envato/pagerduty/pull/84
 [#85]: https://github.com/envato/pagerduty/pull/85
+[#86]: https://github.com/envato/pagerduty/pull/86
 
 ## [4.0.0] - 2022-02-14
 

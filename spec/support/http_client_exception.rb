@@ -9,6 +9,4 @@ require "net/https"
 #
 # This allows use of the new class name while running the test suite on Rubies
 # older than version 2.6.
-unless defined?(Net::HTTPClientException)
-  Net::HTTPClientException = Net::HTTPServerException
-end
+Net::HTTPClientException = Net::HTTPServerException unless defined?(Net::HTTPClientException)

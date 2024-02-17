@@ -176,9 +176,7 @@ module Pagerduty
       # @param (see Pagerduty::EventsApiV1#trigger)
       # @option (see Pagerduty::EventsApiV1#trigger)
       def trigger(description, options = {})
-        if options.key?(:incident_key)
-          raise ArgumentError, "incident_key provided"
-        end
+        raise ArgumentError, "incident_key provided" if options.key?(:incident_key)
 
         options = options.merge(description: description)
         options[:incident_key] = @incident_key unless @incident_key.nil?
@@ -268,9 +266,7 @@ module Pagerduty
           event_type:  event_type,
         )
         response = @transport.send_payload(args)
-        unless response["status"] == "success"
-          raise PagerdutyException.new(self, response, response["message"])
-        end
+        raise PagerdutyException.new(self, response, response["message"]) unless response["status"] == "success"
 
         response
       end
