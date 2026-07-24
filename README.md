@@ -1,9 +1,8 @@
 # pagerduty
 
 > [!CAUTION]
-> This project is not maintained by Envato anymore and will not release new
-> versions. If you're interested in keeping the project alive, please create
-> your own fork.
+> Envato no longer maintains this project and will not provide new releases.
+> If you're interested in keeping the project alive, please create your own fork.
 
 [![License MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/envato/pagerduty/blob/HEAD/LICENSE.txt)
 [![Gem Version](https://img.shields.io/gem/v/pagerduty.svg?maxAge=2592000)](https://rubygems.org/gems/pagerduty)
